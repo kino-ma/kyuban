@@ -7,7 +7,7 @@
 Docker を使うやりかたと，使わないやり方がある， kino-ma は Docker を使っている．
 
 ### Docker を使う場合
-コンテナ環境である Docker を使うと，パソコンに NodeJS 等の開発ようソフトウェアをインストールすることなく開発が行える．
+コンテナ環境である Docker を使うと，パソコンに NodeJS 等の開発用ソフトウェアをインストールすることなく開発が行える．
 また， Docker の機能の一つである `docker compose` というものを使って，環境の管理が楽になっている．
 ([Docker の詳細について](https://knowledge.sakura.ad.jp/13265/))
 ([docker compose の詳細について](https://knowledge.sakura.ad.jp/16862/))
