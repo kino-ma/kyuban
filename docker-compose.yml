@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   web:
-    build: ./web
-    working_dir: "/app"
+    build: "./web"
+    working_dir: "/web"
     volumes:
-      - "./web:/app"
+      - "./web:/web"
     ports:
       - "3000:3000"
