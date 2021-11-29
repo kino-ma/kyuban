@@ -8,3 +8,11 @@ services:
       - "./web:/web"
     ports:
       - "3000:3000"
+
+  api:
+    build: "./api"
+    working_dir: "/api"
+    volumes:
+      - "./api:/api"
+    ports:
+      - "4000:4000"
