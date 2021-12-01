@@ -1,5 +1,7 @@
 import random
 
+from flask import jsonify
+
 from app import app, db
 from app.models import TestModel
 
@@ -12,3 +14,51 @@ def hello():
     db.session.commit()
     text = map(lambda m: m.name, TestModel.query.all())
     return 'Hello, World!' + '\n' + ','.join(text)
+
+
+@app.route('/thread', methods=['GET'])
+def get_thread():
+    user1 = {
+        'id': 1,
+        'name': 'hoge',
+    }
+    user2 = {
+        'id': 2,
+        'name': 'fuga',
+    }
+
+    sample_responses = [
+        {
+            'id': 1,
+            'threadId': 1,
+            'user': user1,
+            'content': "sample respnose",
+        },
+        {
+            'id': 2,
+            'threadId': 1,
+            'user': user2,
+            'content': "hello",
+        },
+        {
+            'id': 3,
+            'threadId': 1,
+            'user': user1,
+            'content': "aaaa",
+        },
+        {
+            'id': 3,
+            'threadId': 1,
+            'user': user2,
+            'content': "hello world",
+        },
+    ]
+
+    sample_thread = {
+        'id': 1,
+        'title': 'sample thread',
+        'user': user1,
+        'responses': sample_responses
+    }
+
+    return jsonify(sample_thread)
