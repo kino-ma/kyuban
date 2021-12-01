@@ -58,7 +58,7 @@ Next.js の公式 (?) Dockerfile をコピペした． docker compose 上では 
 
 ```sh
 docker compose build
-docker compose run web yarn build
+docker compose run web yarn
 ```
 
 起動するためには，以下を実行する．
