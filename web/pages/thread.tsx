@@ -35,7 +35,7 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
       id: 1,
       thread,
       user: user1,
-      content: "hello thread",
+      content: "real responses will appear here",
     },
     {
       id: 2,
@@ -78,10 +78,8 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
 };
 
 Thread.getInitialProps = async (_ctx) => {
-  const thread: ThreadData = {
-    id: 1,
-    title: "Test Thread",
-  };
+  const res = await fetch("http://api:5000/thread");
+  const thread = await res.json();
 
   return {
     thread,
