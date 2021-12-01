@@ -11,11 +11,12 @@ interface ThreadProps {
 export type ThreadData = {
   id: number;
   title: string;
+  responses: ResponseData[];
 };
 
 type ResponseData = {
   id: number;
-  thread: ThreadData;
+  threadId: number;
   user: UserData;
   content: string;
 };
@@ -30,37 +31,10 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
     name: "fuga",
   };
 
-  const sampleResponses: ResponseData[] = [
-    {
-      id: 1,
-      thread,
-      user: user1,
-      content: "real responses will appear here",
-    },
-    {
-      id: 2,
-      thread,
-      user: user2,
-      content: "aaaaa",
-    },
-    {
-      id: 3,
-      thread,
-      user: user1,
-      content: "this is sample",
-    },
-    {
-      id: 3,
-      thread,
-      user: user2,
-      content: "sample response",
-    },
-  ];
-
-  const [responses, setResponses] = useState<ResponseData[]>(sampleResponses);
+  const responses = thread.responses;
   const responseItems = responses.map((response) => (
     <li key={response.id}>
-      [{response.user.name}]: {response.content}
+      [<b>{response.user.name}</b>]: {response.content}
     </li>
   ));
 
