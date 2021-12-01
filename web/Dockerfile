@@ -1,4 +1,5 @@
 FROM node:14-alpine AS dev
+CMD ["node_modules/.bin/next", "dev"]
 
 # Install dependencies only when needed
 FROM node:14-alpine AS deps
