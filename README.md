@@ -99,6 +99,12 @@ docker compose up
 ### Docker を使わない場合
 
 #### web
+0. プロジェクトのディレクトリに移動する
+
+```sh
+cd 2021f-group-9
+```
+
 1. Node.js / yarn をインストールする
 
 [この Qiita 記事](https://qiita.com/suisui654/items/1b89446e03991c7c2c3d) を読んでください．
@@ -108,6 +114,7 @@ docker compose up
 kino-ma は実際に実行していないので，動かなかったら教えてください．
 
 ```sh
+cd web
 yarn build
 yarn start
 ```
@@ -115,6 +122,11 @@ yarn start
 起動が成功すると， [localhost:3000](http://localhost:3000) で Web ページが表示されるはず．
 
 #### API
+0. プロジェクトのディレクトリに移動する
+
+```sh
+cd 2021f-group-9
+```
 
 1. **Python と必要なパッケージをインストール**
 
@@ -128,9 +140,13 @@ pip3 install -r api/requirements.txt
 
 2. **実行する**
 
+起動したいとき
+
 ```sh
+cd api
 export FLASK_APP=api
 export FLASK_ENV=development
+flask db upgrade # そのパソコンで二回目以降の起動は必要ない
 flask run
 ```
 
