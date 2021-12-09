@@ -25,3 +25,6 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.now, onupdate=datetime.now)
+
+    def get_all():
+        return User.query.all()
