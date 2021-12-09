@@ -32,3 +32,11 @@ class User(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+    def json(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "createdAt": self.created_at.isoformat(),
+            "updatedAt": self.updated_at.isoformat()
+        }
