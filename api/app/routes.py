@@ -3,7 +3,7 @@ import random
 from flask import jsonify
 
 from app import app, db
-from app.models import TestModel
+from app.models import TestModel, User
 
 
 @app.route('/')
@@ -15,6 +15,19 @@ def hello():
     text = map(lambda m: m.name, TestModel.query.all())
     return 'Hello, World!' + '\n' + ','.join(text)
 
+
+@app.route('/user', methods=["GET"])
+def get_user():
+    users = User.get_all()
+    return jsonify({"users": [u.json() for u in users]})
+
+
+@app.route('/user', methods=["POST"])
+def create_user():
+    user = User(name='hoge', email="hogehoge@example.com")
+    user.save()
+
+    return jsonify(user.json())
 
 @app.route('/thread', methods=['GET'])
 def get_thread():
