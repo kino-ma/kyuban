@@ -26,6 +26,7 @@ class User(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.now, onupdate=datetime.now)
 
+    @staticmethod
     def get_all():
         return User.query.all()
 
@@ -40,3 +41,14 @@ class User(db.Model):
             "createdAt": self.created_at.isoformat(),
             "updatedAt": self.updated_at.isoformat()
         }
+
+    @staticmethod
+    def lookup(email=None, name=None):
+        user1 = email and User.query.filter_by(email=email).first()
+        user2 = name and User.query.filter_by(name=name).first()
+
+        return user1 or user2
+
+    @staticmethod
+    def exists(email=None, name=None):
+        return User.lookup(email=email, name=name) is not None
