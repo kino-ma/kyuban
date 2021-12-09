@@ -34,10 +34,16 @@ def create_user():
             "success": False
         }), 400
 
+    if User.exists(email=email, name=name):
+        return jsonify({
+            "error": "name or email already used",
+            "success": False,
+        })
+
     user = User(name=name, email=email)
     user.save()
 
-    return jsonify(user.json()), 201
+    return jsonify({"user": user.json(), "success": True}), 201
 
 @app.route('/thread', methods=['GET'])
 def get_thread():
