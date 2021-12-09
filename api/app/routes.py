@@ -1,6 +1,7 @@
 import random
 
-from flask import jsonify
+from flask import jsonify, request
+from werkzeug.exceptions import BadRequestKeyError
 
 from app import app, db
 from app.models import TestModel, User
@@ -24,10 +25,19 @@ def get_user():
 
 @app.route('/user', methods=["POST"])
 def create_user():
-    user = User(name='hoge', email="hogehoge@example.com")
+    try:
+        name = request.form["name"]
+        email = request.form["email"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
+
+    user = User(name=name, email=email)
     user.save()
 
-    return jsonify(user.json())
+    return jsonify(user.json()), 201
 
 @app.route('/thread', methods=['GET'])
 def get_thread():
