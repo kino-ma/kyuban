@@ -1,0 +1,9 @@
+.signin {
+	width: 320px;
+	height: 375px;
+	border: 1px solid var(--green1);
+	border-radius: 8px;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+}
