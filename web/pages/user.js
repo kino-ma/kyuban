@@ -1,0 +1,22 @@
+export type UserData = {
+  id: number;
+  name: string;
+};
+
+// API からくるデータ：
+/*
+user = { // 引数
+    "id": 1234
+    "name": "kino-ma",
+    "updatedAt": "2021/12/12",
+    "createdAt": "2021/12/12"
+}
+*/
+
+// minamiku-san
+const User = ({ user }) => {
+  // ここを編集する
+  return "user desu";
+};
+
+export default User;

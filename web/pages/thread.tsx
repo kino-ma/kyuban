@@ -22,15 +22,6 @@ type ResponseData = {
 };
 
 const Thread: NextPage<ThreadProps> = ({ thread }) => {
-  const user1: UserData = {
-    id: 1,
-    name: "hoge",
-  };
-  const user2: UserData = {
-    id: 2,
-    name: "fuga",
-  };
-
   const responses = thread.responses;
   const responseItems = responses.map((response) => (
     <li key={response.id}>
