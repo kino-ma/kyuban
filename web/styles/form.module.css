@@ -1,0 +1,8 @@
+.singin__form {
+  display: flex;
+  align-items: center;
+  width: 200px;
+  height: 36px;
+  border-bottom: 1px solid var(--black2);
+  margin-top: 24px;
+}
