@@ -19,4 +19,16 @@ const User = ({ user }) => {
   return "user desu";
 };
 
+User.getInitialProps = async (_ctx) => {
+  const user = {
+    // 引数
+    id: 1234,
+    name: "kino-ma",
+    updatedAt: "2021/12/12",
+    createdAt: "2021/12/12",
+  };
+
+  return { user };
+};
+
 export default User;
