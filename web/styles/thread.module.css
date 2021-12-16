@@ -1,0 +1,56 @@
+.thread__container__left {
+  width: 50vw;
+	margin-right: 40px;
+}
+.thread__title {
+	background-color: var(--green1);
+	border-radius: 8px 8px 0 0;
+}
+.thread__items {
+	display: flex;
+	flex-flow: column;
+	background-color: var(--green2);
+	border-radius: 0 0 8px 8px;
+}
+.thread__item__user {
+	margin-left: 8px;
+	margin-bottom: 8px;
+}
+.thread__item__text {
+	width: 40vw;
+	margin-left: 16px;
+	margin-bottom: 8px;
+}
+.thread__item__date {
+	height: 16px;
+	text-align: end;
+	font-size: 10px;
+	padding-right: 16px;
+	margin-bottom: 8px;
+  border-bottom: 1px solid var(--green1);
+}
+.thread__item__date:last-child {
+  border-bottom: 0px;
+}
+
+.thread__container__right {
+  width: 30vw;
+	padding-top: 16px;
+}
+.thread__input__container {
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
+	border: 1px solid var(--green2);
+	border-radius: 8px;
+	padding: 8px;
+	margin-top: 20px;
+}
+.thread__input__area{
+	width: 25vw;
+	margin: 16px 0 16px;
+	font-weight: normal;
+	resize: none;
+	border: 1px solid var(--black3);
+}
