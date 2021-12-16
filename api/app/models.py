@@ -1,7 +1,10 @@
 from datetime import datetime
 
-
 from app import db
+
+from sqlalchemy.orm import relationship
+
+from sqlalchemy import Column, ForeignKey, Integer
 
 
 class TestModel(db.Model):
@@ -71,7 +74,7 @@ class Thread(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
-    creator_id = Column(Integer, ForeignKey('creator.id'))
+    creator_id = Column(Integer, ForeignKey('user.id'))
     creator = relationship("User", back_populates="threads")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False,
