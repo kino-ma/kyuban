@@ -51,8 +51,6 @@ def get_thread():
     threads = Thread.get_all()
     return jsonify({"threads": [t.json() for t in threads]})
 
-# taketaketakeが書いたコード
-
 
 @app.route("/thread", methods=["POST"])
 def create_thread():
@@ -71,4 +69,3 @@ def create_thread():
     thread.save()
 
     return jsonify({"thread": thread.json(), "success": True}), 201
-# taketaketakeが書いたコードここまで
