@@ -19,7 +19,6 @@ class TestModel(db.Model):
 
 
 class User(db.Model):
-    
 
     __tablename__ = 'users'
 
@@ -59,22 +58,13 @@ class User(db.Model):
         return User.lookup(email=email, name=name) is not None
 
 
-
-
-
-
-
-
-
-
-
 class Thread(db.Model):
 
     __tablename__ = 'threads'
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
-    creator_id = Column(Integer, ForeignKey('user.id'))
+    creator_id = Column(Integer, ForeignKey('users.id'))
     creator = relationship("User", back_populates="threads")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False,
@@ -99,5 +89,5 @@ class Thread(db.Model):
 
     @staticmethod
     def lookup(creator):
-        thread = Thread.query.filter_by(creator=creator)      
+        thread = Thread.query.filter_by(creator=creator)
         return thread

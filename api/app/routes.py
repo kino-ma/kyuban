@@ -4,7 +4,7 @@ from flask import jsonify, request
 from werkzeug.exceptions import BadRequestKeyError
 
 from app import app, db
-from app.models import TestModel, User
+from app.models import TestModel, User, Thread
 
 
 @app.route('/')
@@ -15,11 +15,6 @@ def hello():
     db.session.commit()
     text = map(lambda m: m.name, TestModel.query.all())
     return 'Hello, World!' + '\n' + ','.join(text)
-
-
-
-
-
 
 
 @app.route('/user', methods=["GET"])
@@ -51,17 +46,14 @@ def create_user():
     return jsonify({"user": user.json(), "success": True}), 201
 
 
-
-
-
-
-
 @app.route('/thread', methods=['GET'])
 def get_thread():
     threads = Thread.get_all()
     return jsonify({"threads": [t.json() for t in threads]})
 
-#taketaketakeが書いたコード
+# taketaketakeが書いたコード
+
+
 @app.route("/thread", methods=["POST"])
 def create_thread():
     try:
@@ -76,5 +68,5 @@ def create_thread():
     thread = Thread(title=title, creator=creator)
     thread.save()
 
-    return jsonify({“thread”: thread.json(), "success": True}), 201
-###taketaketakeが書いたコードここまで
+    return jsonify({"thread": thread.json(), "success": True}), 201
+# taketaketakeが書いたコードここまで
