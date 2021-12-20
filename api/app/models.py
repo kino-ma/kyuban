@@ -86,7 +86,7 @@ class Thread(db.Model):
         return {
             "id": self.id,
             "title": self.title,
-            "creator": self.creator,
+            "creator": self.creator.json(),
             "createdAt": self.created_at.isoformat(),
             "updatedAt": self.updated_at.isoformat()
         }
