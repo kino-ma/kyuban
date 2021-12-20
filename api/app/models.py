@@ -34,6 +34,10 @@ class User(db.Model):
     def get_all():
         return User.query.all()
 
+    @staticmethod
+    def get(id):
+        return User.query.get(id)
+
     def save(self):
         db.session.add(self)
         db.session.commit()
