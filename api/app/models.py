@@ -101,3 +101,47 @@ class Thread(db.Model):
     def lookup(creator):
         thread = Thread.query.filter_by(creator=creator)      
         return thread
+
+
+
+
+
+
+
+
+class Response(db.Model):
+
+    __tablename__ = 'responses'
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(255), nullable=False)
+    sender_id = Column(Integer, ForeignKey('user.id'))
+    sender = relationship("User", back_populates="resonses")
+    receive_thread__id = Column(Integer, ForeignKey('thread.id'))
+    receive_thread = relationship("User", back_populates="resonses")
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updated_at = db.Column(db.DateTime, nullable=False,
+                           default=datetime.now, onupdate=datetime.now)
+
+    @staticmethod
+    def get_all():
+        return Response.query.all()
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def json(self):
+        return {
+            "id": self.id,
+            "content": self.content,
+            "sender": self.sender,
+            "receive_thread": self.receive_thread,
+            "createdAt": self.created_at.isoformat(),
+            "updatedAt": self.updated_at.isoformat()
+        }
+
+    @staticmethod
+    def lookup(sender):
+        resonse = Response.query.filter_by(sender=sender)      
+        return response

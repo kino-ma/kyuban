@@ -61,7 +61,7 @@ def get_thread():
     threads = Thread.get_all()
     return jsonify({"threads": [t.json() for t in threads]})
 
-#taketaketakeが書いたコード
+#taketaketakeが書いたコード(Dec.20)
 @app.route("/thread", methods=["POST"])
 def create_thread():
     try:
@@ -76,5 +76,37 @@ def create_thread():
     thread = Thread(title=title, creator=creator)
     thread.save()
 
-    return jsonify({“thread”: thread.json(), "success": True}), 201
-###taketaketakeが書いたコードここまで
+    return jsonify({"thread": thread.json(), "success": True}), 201
+###taketaketakeが書いたコードここまで(Dec.20)
+
+
+
+
+
+
+
+
+#taketaketakeが書いたコード(Dec.23)
+@app.route('/response', methods=['GET'])
+def get_response():
+    responses = Response.get_all()
+    return jsonify({"responses": [t.json() for t in responses]})
+
+
+@app.route("/response", methods=["POST"])
+def create_response():
+    try:
+        content = request.form["content"]
+        sender = request.form["sender"]
+        receive_thread = request.form["receive_thread"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
+
+    response = Response(content=content, sender=sender, receive_thread=receive_thread)
+    response.save()
+
+    return jsonify({"response": response.json(), "success": True}), 201
+###taketaketakeが書いたコードここまで(Dec.23)
