@@ -1,6 +1,6 @@
-// miki-san
 import { NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 
 const Register = () => {
@@ -10,19 +10,28 @@ const Register = () => {
     password: ''
   });
 
-  const handleSubmit = async (evt) => {
-    evt.preventDefault();
-    const params = new URLSearchParams(formInput);
+  const router = useRouter();
 
-    const resp = await fetch("http://localhost:5000/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: params
-    }).catch(console.error);
-    const json = await resp.json().catch(console.error);
-    alert("got the response: " + json);
+  const handleSubmit = async (evt) => {
+    try {
+      evt.preventDefault();
+      const params = new URLSearchParams(formInput);
+
+      const resp = await fetch("http://localhost:5000/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: params
+      });
+      const json = await resp.json();
+      alert("got the response: " + json);
+
+      router.push("/home");
+    }
+    catch (e) {
+      console.error("an error occured while creating user:", e);
+    }
   }
 
   return (
