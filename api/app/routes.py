@@ -4,7 +4,7 @@ from flask import jsonify, request
 from werkzeug.exceptions import BadRequestKeyError
 
 from app import app, db
-from app.models import TestModel, User
+from app.models import TestModel, User, Thread, Response
 
 
 @app.route('/')
@@ -45,49 +45,54 @@ def create_user():
 
     return jsonify({"user": user.json(), "success": True}), 201
 
+
 @app.route('/thread', methods=['GET'])
 def get_thread():
-    user1 = {
-        'id': 1,
-        'name': 'hoge',
-    }
-    user2 = {
-        'id': 2,
-        'name': 'fuga',
-    }
+    threads = Thread.get_all()
+    return jsonify({"threads": [t.json() for t in threads]})
 
-    sample_responses = [
-        {
-            'id': 1,
-            'threadId': 1,
-            'user': user1,
-            'content': "sample respnose",
-        },
-        {
-            'id': 2,
-            'threadId': 1,
-            'user': user2,
-            'content': "hello",
-        },
-        {
-            'id': 3,
-            'threadId': 1,
-            'user': user1,
-            'content': "aaaa",
-        },
-        {
-            'id': 3,
-            'threadId': 1,
-            'user': user2,
-            'content': "hello world",
-        },
-    ]
 
-    sample_thread = {
-        'id': 1,
-        'title': 'sample thread',
-        'user': user1,
-        'responses': sample_responses
-    }
+@app.route("/thread", methods=["POST"])
+def create_thread():
+    try:
+        title = request.form["title"]
+        creator_id = request.form["creator"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
 
-    return jsonify(sample_thread)
+    creator = User.get(creator_id)
+
+    thread = Thread(title=title, creator=creator)
+    thread.save()
+
+    return jsonify({"thread": thread.json(), "success": True}), 201
+
+
+@app.route('/response', methods=['GET'])
+def get_response():
+    responses = Response.get_all()
+    return jsonify({"responses": [t.json() for t in responses]})
+
+
+@app.route("/response", methods=["POST"])
+def create_response():
+    try:
+        content = request.form["content"]
+        sender_id = request.form["sender"]
+        receive_thread_id = request.form["receiveThread"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
+
+    sender = User.get(sender_id)
+
+    response = Response(content=content, sender=sender,
+                        receive_thread__id=receive_thread_id)
+    response.save()
+
+    return jsonify({"response": response.json(), "success": True}), 201
