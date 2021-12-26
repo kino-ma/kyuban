@@ -10,22 +10,19 @@ const Register = () => {
     password: ''
   });
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = async (evt) => {
     evt.preventDefault();
     const params = new URLSearchParams(formInput);
 
-    return fetch("http://localhost:5000/user", {
+    const resp = await fetch("http://localhost:5000/user", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: params
-    })
-      .then((resp) => {
-        return resp.json();
-      })
-      .then((json) => alert(json))
-      .catch((err) => console.error(err))
+    }).catch(console.error);
+    const json = await resp.json().catch(console.error);
+    alert("got the response: " + json);
   }
 
   return (
