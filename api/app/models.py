@@ -26,6 +26,7 @@ class User(db.Model):
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255))
     threads = relationship("Thread", back_populates="creator")
+    responses = relationship("Response", back_populates="sender")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.now, onupdate=datetime.now)
@@ -70,6 +71,7 @@ class Thread(db.Model):
     title = db.Column(db.String(255), nullable=False)
     creator_id = Column(Integer, ForeignKey('users.id'))
     creator = relationship("User", back_populates="threads")
+    responses = relationship("Response", back_populates="receive_thread")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.now, onupdate=datetime.now)
@@ -77,6 +79,10 @@ class Thread(db.Model):
     @staticmethod
     def get_all():
         return Thread.query.all()
+
+    @staticmethod
+    def get(id):
+        return User.query.get(id)
 
     def save(self):
         db.session.add(self)
@@ -95,3 +101,42 @@ class Thread(db.Model):
     def lookup(creator):
         thread = Thread.query.filter_by(creator=creator)
         return thread
+
+
+class Response(db.Model):
+
+    __tablename__ = 'responses'
+
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(255), nullable=False)
+    sender_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    sender = relationship("User", back_populates="responses")
+    receive_thread__id = Column(
+        Integer, ForeignKey('threads.id'), nullable=False)
+    receive_thread = relationship("Thread", back_populates="responses")
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updated_at = db.Column(db.DateTime, nullable=False,
+                           default=datetime.now, onupdate=datetime.now)
+
+    @staticmethod
+    def get_all():
+        return Response.query.all()
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def json(self):
+        return {
+            "id": self.id,
+            "content": self.content,
+            "sender": self.sender.json(),
+            "receiveThreadId": self.receive_thread__id,
+            "createdAt": self.created_at.isoformat(),
+            "updatedAt": self.updated_at.isoformat()
+        }
+
+    @staticmethod
+    def lookup(sender):
+        response = Response.query.filter_by(sender=sender)
+        return response

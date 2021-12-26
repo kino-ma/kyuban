@@ -4,7 +4,7 @@ from flask import jsonify, request
 from werkzeug.exceptions import BadRequestKeyError
 
 from app import app, db
-from app.models import TestModel, User, Thread
+from app.models import TestModel, User, Thread, Response
 
 
 @app.route('/')
@@ -69,3 +69,30 @@ def create_thread():
     thread.save()
 
     return jsonify({"thread": thread.json(), "success": True}), 201
+
+
+@app.route('/response', methods=['GET'])
+def get_response():
+    responses = Response.get_all()
+    return jsonify({"responses": [t.json() for t in responses]})
+
+
+@app.route("/response", methods=["POST"])
+def create_response():
+    try:
+        content = request.form["content"]
+        sender_id = request.form["sender"]
+        receive_thread_id = request.form["receiveThread"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
+
+    sender = User.get(sender_id)
+
+    response = Response(content=content, sender=sender,
+                        receive_thread__id=receive_thread_id)
+    response.save()
+
+    return jsonify({"response": response.json(), "success": True}), 201
