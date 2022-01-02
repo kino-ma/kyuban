@@ -16,16 +16,18 @@ export type ThreadData = {
 
 type ResponseData = {
   id: number;
-  threadId: number;
-  user: UserData;
+  receiveThreadId: number;
+  sender: UserData;
   content: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 const Thread: NextPage<ThreadProps> = ({ thread }) => {
   const responses = thread.responses;
   const responseItems = responses.map((response) => (
     <li key={response.id}>
-      [<b>{response.user.name}</b>]: {response.content}
+      [<b>{response.sender.name}</b>]: {response.content}
     </li>
   ));
 
@@ -44,10 +46,10 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
 
 Thread.getInitialProps = async (_ctx) => {
   const res = await fetch("http://api:5000/thread");
-  const thread = await res.json();
+  const { threads } = await res.json();
 
   return {
-    thread,
+    thread: threads[0],
   };
 };
 
