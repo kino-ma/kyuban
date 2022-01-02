@@ -89,10 +89,12 @@ class Thread(db.Model):
         db.session.commit()
 
     def json(self):
+        responses = map(lambda r: r.json(), self.responses)
         return {
             "id": self.id,
             "title": self.title,
             "creator": self.creator.json(),
+            "responses": list(responses),
             "createdAt": self.created_at.isoformat(),
             "updatedAt": self.updated_at.isoformat()
         }
