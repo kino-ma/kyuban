@@ -16,7 +16,7 @@ user = { // 引数
 // minamiku-san
 const User = ({ user }) => {
   // ここを編集する
-  return "user desu";
+  return user.name;
 };
 
 User.getInitialProps = async (_ctx) => {
