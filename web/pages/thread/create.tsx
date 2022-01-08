@@ -2,8 +2,8 @@ import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import React, { useState } from "react";
-import { ThreadData } from "./[threadId]";
 import { post } from "../../common/api";
+import { ThreadData } from "../../common/types";
 
 // FIXME: error validation
 type CreateThreadResponse = SuccessResponse;

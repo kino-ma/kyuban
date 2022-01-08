@@ -1,8 +1,3 @@
-export type UserData = {
-  id: number;
-  name: string;
-};
-
 // API からくるデータ：
 /*
 user = { // 引数

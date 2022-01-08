@@ -2,8 +2,8 @@ import { NextPage } from "next";
 import Head from "next/head";
 import React, { useState } from "react";
 
-import { UserData } from "../user";
 import { get } from "../../common/api";
+import { ThreadData } from "../../common/types";
 
 // FIXME: error validation
 type GetThreadResponse = SuccessResponse;
@@ -21,23 +21,6 @@ interface ErrorResponse {
 interface ThreadProps {
   thread: ThreadData;
 }
-
-export type ThreadData = {
-  id: number;
-  title: string;
-  responses: ResponseData[];
-  createdAt: string;
-  updatedAt: string;
-};
-
-type ResponseData = {
-  id: number;
-  receiveThreadId: number;
-  sender: UserData;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
-};
 
 const Thread: NextPage<ThreadProps> = ({ thread }) => {
   const responses = thread.responses;
