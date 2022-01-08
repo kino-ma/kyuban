@@ -1,7 +1,8 @@
-import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+
+import { post } from "../common/api";
 
 const Register = () => {
   const [formInput, setFormInput] = useState({
@@ -15,17 +16,8 @@ const Register = () => {
   const handleSubmit = async (evt) => {
     try {
       evt.preventDefault();
-      const params = new URLSearchParams(formInput);
-
-      const resp = await fetch("http://localhost:5000/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: params
-      });
+      const resp = await post("/user", formInput);
       const json = await resp.json();
-      alert("got the response: " + json);
 
       router.push("/home");
     }
