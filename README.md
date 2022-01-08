@@ -76,7 +76,7 @@ docker compose up
 ```
 
 #### API
-Python の公式コンテナの上で作っている．　docker compose 上では `api` という名前になっている．
+Python の公式コンテナの上で作っている． docker compose 上では `api` という名前になっている．
 
 初めて起動する場合，まずは以下を実行する．
 
@@ -151,3 +151,8 @@ flask run
 ```
 
 起動が成功すると， [localhost:5000](http://localhost:5000) で API サーバにアクセスできるはず．
+
+## Deploying
+### 1. `.env` ファイルの更新
+1. `cp .env.template .env`
+2. `.env.template` に従って、実際の環境変数をセットしていく。
