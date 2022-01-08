@@ -1,10 +1,28 @@
+const PORT = 5000;
+
+const checkClientSide = (): boolean => {
+  return typeof window === "undefined";
+};
+
+const getBaseUrl = (isServerSide: boolean): string => {
+  const host = isServerSide ? "api" : "localhost";
+  const baseUrl = `http://${host}:${PORT}`;
+  return baseUrl;
+};
+
 export const post = (
   path: string,
-  data: Record<string, string>
+  data: Record<string, string>,
+  isServerSide?: boolean
 ): Promise<Response> => {
   const params = new URLSearchParams(data);
 
-  const resp = fetch(`http://localhost:5000${path}`, {
+  if (typeof isServerSide === "undefined") {
+    isServerSide = !checkClientSide();
+  }
+  const baseUrl = getBaseUrl(isServerSide);
+
+  const resp = fetch(`${baseUrl}${path}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -15,8 +33,15 @@ export const post = (
   return resp;
 };
 
-export const get = (path: string): Promise<Response> => {
-  const resp = fetch(`http://localhost:5000${path}`);
+export const get = (
+  path: string,
+  isServerSide?: boolean
+): Promise<Response> => {
+  if (typeof isServerSide === "undefined") {
+    isServerSide = !checkClientSide();
+  }
+  const baseUrl = getBaseUrl(isServerSide);
 
+  const resp = fetch(`${baseUrl}${path}`);
   return resp;
 };
