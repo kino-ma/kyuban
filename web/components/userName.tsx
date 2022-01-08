@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { UserData } from "../common/types";
 
 interface IUserNameProps {
@@ -6,9 +8,10 @@ interface IUserNameProps {
 
 export const UserName: React.FC<IUserNameProps> = ({ user }) => {
   const uri = `/user/${user.id}`;
+
   return (
-    <a href={uri}>
-      <b>{user.name}</b>
-    </a>
+    <Link href={uri}>
+      <a>{user.name}</a>
+    </Link>
   );
 };
