@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 
-import { post } from "../utils/api";
+import { post } from "../common/api";
 
 const Register = () => {
   const [formInput, setFormInput] = useState({
