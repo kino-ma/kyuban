@@ -23,6 +23,21 @@ def get_user():
     return jsonify({"users": [u.json() for u in users]})
 
 
+@app.route('/user/<id>', methods=['GET'])
+def get_user_with_id(id):
+    user = User.get(id)
+
+    if not user:
+        return jsonify({
+            "success": False,
+            "error": f"user with id {id} was not found"
+        }), 404
+
+    return jsonify({
+        "user": user.json(), "success": True
+    })
+
+
 @app.route('/user', methods=["POST"])
 def create_user():
     try:
