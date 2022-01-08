@@ -40,14 +40,14 @@ def signin():
     if not user:
         return jsonify(bad_req), 400
 
-    password_hash = UserAuth.get_by_user(user)
-    invalid_password = check_password_hash(password_hash, given_password)
+    password_hash = UserAuth.get_by_user(user).password_hash
+    valid_password = check_password_hash(password_hash, given_password)
 
-    if invalid_password:
+    if not valid_password:
         return jsonify(bad_req), 400
 
     login_user(user)
-    return jsonify({"success": True, "user": user})
+    return jsonify({"success": True, "user": user.json()})
 
 
 @app.route('/user', methods=["GET"])
@@ -76,6 +76,7 @@ def create_user():
     try:
         name = request.form["name"]
         email = request.form["email"]
+        password = request.form["password"]
     except BadRequestKeyError as e:
         return jsonify({
             "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
@@ -90,6 +91,10 @@ def create_user():
 
     user = User(name=name, email=email)
     user.save()
+
+    password_hash = generate_password_hash(password)
+    user_auth = UserAuth(user_id=user.id, password_hash=password_hash)
+    user_auth.save()
 
     return jsonify({"user": user.json(), "success": True}), 201
 
