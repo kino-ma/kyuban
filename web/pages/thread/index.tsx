@@ -3,6 +3,7 @@ import Head from "next/head";
 import React, { useState } from "react";
 
 import { UserData } from "../user";
+import { get } from "../../utils/api";
 
 interface ThreadProps {
   thread: ThreadData;
@@ -45,7 +46,7 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
 };
 
 Thread.getInitialProps = async (_ctx) => {
-  const res = await fetch("http://api:5000/thread");
+  const res = await get("/thread");
   const { threads } = await res.json();
 
   return {

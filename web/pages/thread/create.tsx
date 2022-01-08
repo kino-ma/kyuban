@@ -3,6 +3,7 @@ import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import React, { useState } from "react";
 import { ThreadData } from ".";
+import { post } from "../../utils/api";
 
 interface ThreadProps {
   thread: ThreadData;
@@ -16,15 +17,8 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (evt) => {
     try {
       evt.preventDefault();
-      const params = new URLSearchParams({ title });
 
-      const resp = await fetch("http://localhost:5000/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: params,
-      });
+      const resp = await post("http://localhost:5000/user", { title });
       const json = await resp.json();
       alert("got the response: " + json);
 
