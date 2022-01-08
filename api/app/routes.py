@@ -52,7 +52,22 @@ def get_thread():
     return jsonify({"threads": [t.json() for t in threads]})
 
 
-@app.route("/thread", methods=["POST"])
+@app.route('/thread/<id>', methods=['GET'])
+def get_thread_with_id(id):
+    thread = Thread.get(id)
+
+    if not thread:
+        return jsonify({
+            "success": False,
+            "error": f"thread with id {id} was not found"
+        }), 404
+
+    return jsonify({
+        "thread": thread.json(), "success": True
+    })
+
+
+@ app.route("/thread", methods=["POST"])
 def create_thread():
     try:
         title = request.form["title"]
@@ -71,13 +86,13 @@ def create_thread():
     return jsonify({"thread": thread.json(), "success": True}), 201
 
 
-@app.route('/response', methods=['GET'])
+@ app.route('/response', methods=['GET'])
 def get_response():
     responses = Response.get_all()
     return jsonify({"responses": [t.json() for t in responses]})
 
 
-@app.route("/response", methods=["POST"])
+@ app.route("/response", methods=["POST"])
 def create_response():
     try:
         content = request.form["content"]
