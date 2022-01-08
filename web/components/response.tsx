@@ -1,7 +1,7 @@
 import React from "react";
 
 import { ResponseData } from "../common/types";
-import { UserName } from "./username";
+import { UserName } from "./userName";
 
 export const Response: React.FC<ResponseData> = (response) => {
   return (
