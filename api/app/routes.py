@@ -1,7 +1,7 @@
 import random
 
 from flask import jsonify, request
-from flask_login import login_user
+from flask_login import login_user, login_required, current_user
 from werkzeug.exceptions import BadRequestKeyError
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -21,6 +21,7 @@ def hello():
 
 
 @app.route('/signin', methods=["POST"])
+@login_required
 def signin():
     bad_req = {
         "error": "invalid email or password",
@@ -121,6 +122,7 @@ def get_thread_with_id(id):
 
 
 @ app.route("/thread", methods=["POST"])
+@login_required
 def create_thread():
     try:
         title = request.form["title"]
@@ -146,6 +148,7 @@ def get_response():
 
 
 @ app.route("/response", methods=["POST"])
+@login_required
 def create_response():
     try:
         content = request.form["content"]
