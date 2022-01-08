@@ -82,7 +82,7 @@ class Thread(db.Model):
 
     @staticmethod
     def get(id):
-        return User.query.get(id)
+        return Thread.query.get(id)
 
     def save(self):
         db.session.add(self)
