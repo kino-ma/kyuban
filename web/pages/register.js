@@ -16,9 +16,7 @@ const Register = () => {
   const handleSubmit = async (evt) => {
     try {
       evt.preventDefault();
-      const params = new URLSearchParams(formInput);
-
-      const resp = await post("http://localhost:5000/user", formInput);
+      const resp = await post("/user", formInput);
       const json = await resp.json();
       alert("got the response: " + json);
 

@@ -18,7 +18,7 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
     try {
       evt.preventDefault();
 
-      const resp = await post("http://localhost:5000/user", { title });
+      const resp = await post("/user", { title });
       const json = await resp.json();
       alert("got the response: " + json);
 
