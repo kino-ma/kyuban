@@ -28,6 +28,7 @@ export const post = (
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body: params,
+    credentials: "include",
   });
 
   return resp;
@@ -42,6 +43,8 @@ export const get = (
   }
   const baseUrl = getBaseUrl(isServerSide);
 
-  const resp = fetch(`${baseUrl}${path}`);
+  const resp = fetch(`${baseUrl}${path}`, {
+    credentials: "include",
+  });
   return resp;
 };

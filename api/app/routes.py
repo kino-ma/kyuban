@@ -21,7 +21,6 @@ def hello():
 
 
 @app.route('/signin', methods=["POST"])
-@login_required
 def signin():
     bad_req = {
         "error": "invalid email or password",
