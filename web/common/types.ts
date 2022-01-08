@@ -13,7 +13,7 @@ export type ThreadData = {
   updatedAt: string;
 };
 
-type ResponseData = {
+export type ResponseData = {
   id: number;
   receiveThreadId: number;
   sender: UserData;
