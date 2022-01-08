@@ -18,7 +18,6 @@ const Register = () => {
       evt.preventDefault();
       const resp = await post("/user", formInput);
       const json = await resp.json();
-      alert("got the response: " + json);
 
       router.push("/home");
     }

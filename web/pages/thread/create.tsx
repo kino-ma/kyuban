@@ -18,11 +18,10 @@ const CreateThread: React.FC = () => {
     try {
       evt.preventDefault();
 
-      const resp = await post("/user", { title });
+      const resp = await post("/thread", { title, creator: "1" });
       const json = await resp.json();
-      alert("got the response: " + json);
 
-      router.push("/home");
+      router.push("/thread");
     } catch (e) {
       console.error("an error occured while creating user:", e);
     }
