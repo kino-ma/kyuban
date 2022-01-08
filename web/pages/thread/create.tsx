@@ -9,7 +9,7 @@ interface ThreadProps {
   thread: ThreadData;
 }
 
-const Thread: NextPage<ThreadProps> = ({ thread }) => {
+const CreateThread: React.FC = () => {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -62,4 +62,4 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
   );
 };
 
-export default Thread;
+export default CreateThread;
