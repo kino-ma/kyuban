@@ -62,13 +62,4 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
   );
 };
 
-Thread.getInitialProps = async (_ctx) => {
-  const res = await fetch("http://api:5000/thread");
-  const { threads } = await res.json();
-
-  return {
-    thread: threads[0],
-  };
-};
-
 export default Thread;
