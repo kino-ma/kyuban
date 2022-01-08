@@ -2,11 +2,19 @@ import { NextPage } from "next";
 import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import React, { useState } from "react";
-import { ThreadData } from ".";
+import { ThreadData } from "./[threadId]";
 import { post } from "../../utils/api";
 
-interface ThreadProps {
+type CreateThreadResponse = SuccessResponse;
+
+type SuccessResponse = {
   thread: ThreadData;
+  success: true;
+};
+
+interface ErrorResponse {
+  success: false | undefined;
+  error: false | undefined;
 }
 
 const CreateThread: React.FC = () => {
@@ -19,9 +27,9 @@ const CreateThread: React.FC = () => {
       evt.preventDefault();
 
       const resp = await post("/thread", { title, creator: "1" });
-      const json = await resp.json();
+      const { thread }: CreateThreadResponse = await resp.json();
 
-      router.push("/thread");
+      router.push(`/thread/${thread.id}`);
     } catch (e) {
       console.error("an error occured while creating user:", e);
     }
