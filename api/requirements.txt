@@ -3,3 +3,4 @@ sqlalchemy
 flask-migrate
 flask-sqlalchemy
 Flask-Cors==3.0.10
+flask-login

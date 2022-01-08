@@ -23,3 +23,5 @@ services:
     environment:
       - FLASK_APP=api
       - FLASK_ENV=development
+      # Default secret. See .env.template
+      - API_SECRET_KEY="${API_SECRET_KEY:-68bca9381044dc2ee23aefbfd273c68ea68679a245b5f7e666f8d298696c7bf6}"

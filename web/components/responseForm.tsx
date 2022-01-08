@@ -41,7 +41,6 @@ export const ResponseForm: React.FC<IResponseFormProps> = ({
       // FIXME: get user from session
       const resp = await post("/response", {
         content,
-        sender: "1",
         receiveThread: threadId.toString(),
       });
       const { response }: PostResponseResponse = await resp.json();
