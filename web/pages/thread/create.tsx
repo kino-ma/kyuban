@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { ThreadData } from "./[threadId]";
 import { post } from "../../utils/api";
 
+// FIXME: error validation
 type CreateThreadResponse = SuccessResponse;
 
 type SuccessResponse = {

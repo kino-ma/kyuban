@@ -5,6 +5,19 @@ import React, { useState } from "react";
 import { UserData } from "../user";
 import { get } from "../../utils/api";
 
+// FIXME: error validation
+type GetThreadResponse = SuccessResponse;
+
+type SuccessResponse = {
+  thread: ThreadData;
+  success: true;
+};
+
+interface ErrorResponse {
+  success: false | undefined;
+  error: false | undefined;
+}
+
 interface ThreadProps {
   thread: ThreadData;
 }
@@ -13,6 +26,8 @@ export type ThreadData = {
   id: number;
   title: string;
   responses: ResponseData[];
+  createdAt: string;
+  updatedAt: string;
 };
 
 type ResponseData = {
@@ -47,11 +62,9 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
 
 Thread.getInitialProps = async ({ query }) => {
   const res = await get(`/thread/${query.threadId}`);
-  const { threads } = await res.json();
+  const { thread }: GetThreadResponse = await res.json();
 
-  return {
-    thread: threads[0],
-  };
+  return { thread };
 };
 
 export default Thread;
