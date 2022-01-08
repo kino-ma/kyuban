@@ -3,7 +3,7 @@ import Head from "next/head";
 import React, { useState } from "react";
 
 import { UserData } from "../user";
-import { get } from "../../utils/api";
+import { get } from "../../common/api";
 
 // FIXME: error validation
 type GetThreadResponse = SuccessResponse;

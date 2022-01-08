@@ -3,7 +3,7 @@ import { useRouter } from "next/dist/client/router";
 import Head from "next/head";
 import React, { useState } from "react";
 import { ThreadData } from "./[threadId]";
-import { post } from "../../utils/api";
+import { post } from "../../common/api";
 
 // FIXME: error validation
 type CreateThreadResponse = SuccessResponse;
