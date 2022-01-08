@@ -45,8 +45,8 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
   );
 };
 
-Thread.getInitialProps = async (_ctx) => {
-  const res = await get("/thread");
+Thread.getInitialProps = async ({ query }) => {
+  const res = await get(`/thread/${query.threadId}`);
   const { threads } = await res.json();
 
   return {
