@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 import { get } from "../../common/api";
 import { ThreadData } from "../../common/types";
+import { Response } from "../../components/response";
 
 // FIXME: error validation
 type GetThreadResponse = SuccessResponse;
@@ -26,7 +27,7 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
   const responses = thread.responses;
   const responseItems = responses.map((response) => (
     <li key={response.id}>
-      [<b>{response.sender.name}</b>]: {response.content}
+      <Response {...response} />
     </li>
   ));
 
