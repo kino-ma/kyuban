@@ -1,10 +1,13 @@
 import random
 
 from flask import jsonify, request
+from flask_login import login_user
 from werkzeug.exceptions import BadRequestKeyError
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 from app import app, db
-from app.models import TestModel, User, Thread, Response
+from app.models import TestModel, User, UserAuth, Thread, Response
 
 
 @app.route('/')
@@ -15,6 +18,36 @@ def hello():
     db.session.commit()
     text = map(lambda m: m.name, TestModel.query.all())
     return 'Hello, World!' + '\n' + ','.join(text)
+
+
+@app.route('/signin', methods=["POST"])
+def signin():
+    bad_req = {
+        "error": "invalid email or password",
+        "success": False
+    }
+
+    try:
+        email = request.form["email"]
+        given_password = request.form["password"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
+
+    user = User.lookup(email=email)
+    if not user:
+        return jsonify(bad_req), 400
+
+    password_hash = UserAuth.get_by_user(user)
+    invalid_password = check_password_hash(password_hash, given_password)
+
+    if invalid_password:
+        return jsonify(bad_req), 400
+
+    login_user(user)
+    return jsonify({"success": True, "user": user})
 
 
 @app.route('/user', methods=["GET"])

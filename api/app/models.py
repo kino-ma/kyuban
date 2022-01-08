@@ -2,9 +2,9 @@ from datetime import datetime
 
 from app import db
 
-from sqlalchemy.orm import relationship
-
 from sqlalchemy import Column, ForeignKey, Integer
+from sqlalchemy.orm import relationship
+from flask_login import UserMixin
 
 
 class TestModel(db.Model):
@@ -18,7 +18,7 @@ class TestModel(db.Model):
                            default=datetime.now, onupdate=datetime.now)
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
 
     __tablename__ = 'users'
 
@@ -61,6 +61,29 @@ class User(db.Model):
     @staticmethod
     def exists(email=None, name=None):
         return User.lookup(email=email, name=name) is not None
+
+
+class UserAuth(db.Model):
+
+    __tablename__ = 'users_auth'
+
+    user_id = db.Column(db.Integer, ForeignKey(User.id), primary_key=True)
+    password_hash = db.Column(db.String())
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updated_at = db.Column(db.DateTime, nullable=False,
+                           default=datetime.now, onupdate=datetime.now)
+
+    @staticmethod
+    def get(id):
+        return UserAuth.query.get(id)
+
+    @staticmethod
+    def get_by_user(user: User):
+        return UserAuth.query.get(user.id)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 class Thread(db.Model):
