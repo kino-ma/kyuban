@@ -1,7 +1,7 @@
 const PORT = 5000;
 
 const checkClientSide = (): boolean => {
-  return typeof window === "undefined";
+  return typeof window !== "undefined";
 };
 
 const getBaseUrl = (isServerSide: boolean): string => {
