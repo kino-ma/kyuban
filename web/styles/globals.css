@@ -11,6 +11,7 @@ h1 {
 }
 h2 {
   font-size: 24px;
+  margin: 12px;
 }
 h3 {
   font-size: 30px;
@@ -28,13 +29,13 @@ a {
 }
 
 :root {
-  --pink1:#FF5DA2;
+  --pink1: #ff5da2;
   --white1: #ffffff;
   --white2: #f5f5f5;
   --black1: #1a1a1a;
   --black2: #828282;
   --black3: #c4c4c4;
-  --green1: #47D0BD;
-  --green2: #DAEC8B;
-  --cream: #FFFDD6;
+  --green1: #47d0bd;
+  --green2: #daec8b;
+  --cream: #fffdd6;
 }
