@@ -55,20 +55,25 @@ const SignIn = () => {
         <h1>ようこそ！</h1>
         <div className={card.signin}>
           <h2>Sign In</h2>
-          <form onSubmit={handleSubmit}>
-            <div className={form.singin__form}>
-              <input
-                style={{ outline: "none", border: "none" }}
-                placeholder="メールアドレス"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div className={form.singin__form}>
-              <input
-                style={{ outline: "none", border: "none" }}
-                placeholder="パスワード"
-                onChange={(e) => setPassword(e.target.value)}
-              />
+          <form
+            onSubmit={handleSubmit}
+            className={form.signin__form__container}
+          >
+            <div>
+              <div className={form.singin__form}>
+                <input
+                  style={{ outline: "none", border: "none" }}
+                  placeholder="メールアドレス"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className={form.singin__form}>
+                <input
+                  style={{ outline: "none", border: "none" }}
+                  placeholder="パスワード"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
             </div>
             <button className={button.button}>SIGN IN</button>
           </form>
