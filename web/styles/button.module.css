@@ -4,7 +4,7 @@
   align-items: center;
   width: 100px;
   height: 42px;
-  margin-top: 64px;
+  margin: 64px 1px 1px 1px;
   background-color: var(--green1);
   color: var(--white1);
   border-radius: 4px;
@@ -14,4 +14,5 @@
 .button:hover {
   width: 102px;
   height: 44px;
+  margin: 62px 0px 0px 0px;
 }
