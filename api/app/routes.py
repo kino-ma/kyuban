@@ -125,6 +125,7 @@ def get_thread_with_id(id):
 def create_thread():
     try:
         title = request.form["title"]
+        first_content = request.form["content"]
     except BadRequestKeyError as e:
         return jsonify({
             "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
@@ -135,6 +136,10 @@ def create_thread():
     thread = Thread(title=title, creator=creator)
     thread.save()
 
+    first_response = Response(
+        sender=current_user, content=first_content, receive_thread__id=thread.id)
+
+    thread = thread.get(thread.id)
     return jsonify({"thread": thread.json(), "success": True}), 201
 
 
