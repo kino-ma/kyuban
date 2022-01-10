@@ -140,7 +140,13 @@ def create_thread():
 
 @ app.route('/response', methods=['GET'])
 def get_response():
-    responses = Response.get_all()
+    sender_id = request.args.get('sender')
+
+    if sender_id:
+        sender = User.get(sender_id)
+        responses = Response.lookup(sender)
+    else:
+        responses = Response.get_all()
     return jsonify({"responses": [t.json() for t in responses]})
 
 
