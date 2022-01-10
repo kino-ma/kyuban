@@ -176,17 +176,9 @@ def create_response():
     return jsonify({"response": response.json(), "success": True}), 201
 
 
-@ app.route("/follow", methods=["POST"])
+@ app.route("/follow/<target_id>", methods=["POST"])
 @login_required
-def follow_someone():
-    try:
-        target_id = request.form["target"]
-    except BadRequestKeyError as e:
-        return jsonify({
-            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
-            "success": False
-        }), 400
-
+def follow_someone(target_id):
     src = current_user.id
 
     dst_user = User.get(target_id)
