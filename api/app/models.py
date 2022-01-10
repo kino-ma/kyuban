@@ -43,13 +43,41 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def json(self):
-        return {
+    def followers(self):
+        follows = Follow.followers_of(self.id)
+
+        users = []
+        for f in follows:
+            user = User.get(f.dst_user_id)
+            users.append(user)
+
+        return users
+
+    def followees(self):
+        follows = Follow.follwees_of(self.id)
+
+        users = []
+        for f in follows:
+            user = User.get(f.dst_user_id)
+            users.append(user)
+
+        return users
+
+    def json(self, follows=True):
+        data = {
             "id": self.id,
             "name": self.name,
             "createdAt": self.created_at.isoformat(),
             "updatedAt": self.updated_at.isoformat()
         }
+
+        if follows:
+            data["followers"] = [u.json(follows=False)
+                                 for u in self.followers()]
+            data["followees"] = [u.json(follows=False)
+                                 for u in self.followees()]
+
+        return data
 
     @staticmethod
     def lookup(email=None, name=None):
@@ -193,7 +221,7 @@ class Follow(db.Model):
         db.session.commit()
 
     @staticmethod
-    def follwers_of(user_id):
+    def followers_of(user_id):
         followers = Follow.query.filter_by(dst_user_id=user_id)
         return followers
 
