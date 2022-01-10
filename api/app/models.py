@@ -169,3 +169,35 @@ class Response(db.Model):
     def lookup(sender):
         response = Response.query.filter_by(sender=sender)
         return response
+
+
+class Follow(db.Model):
+
+    __tablename__ = 'follows'
+
+    id = db.Column(db.Integer, primary_key=True)
+    src_user_id = db.Column(db.Integer, ForeignKey(User.id), nullable=False)
+    dst_user_id = db.Column(db.Integer, ForeignKey(User.id), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+
+    @staticmethod
+    def get(src_user_id, dst_user_id):
+        return Response.query.get(src_user_id=src_user_id, dst_user_id=dst_user_id)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    @staticmethod
+    def follwers_of(user_id):
+        followers = Follow.query.filter_by(dst_user_id=user_id)
+        return followers
+
+    @staticmethod
+    def follwees_of(user_id):
+        followers = Follow.query.filter_by(src_user_id=user_id)
+        return followers
