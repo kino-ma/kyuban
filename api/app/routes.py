@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 from app import app, db
-from app.models import TestModel, User, UserAuth, Thread, Response
+from app.models import TestModel, User, UserAuth, Thread, Response, Follow
 
 
 @app.route('/')
@@ -174,3 +174,29 @@ def create_response():
     response.save()
 
     return jsonify({"response": response.json(), "success": True}), 201
+
+
+@ app.route("/follow", methods=["POST"])
+@login_required
+def follow_someone():
+    try:
+        target_id = request.form["target"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
+
+    src = current_user.id
+
+    dst_user = User.get(target_id)
+    if not dst_user:
+        return jsonify({
+            "success": False,
+            "error": f"user with id {target_id} was not found"
+        }), 404
+
+    follow = Follow(src_user_id=src, dst_user_id=dst_user.id)
+    follow.save()
+
+    return jsonify({"success": True}), 201
