@@ -210,7 +210,7 @@ class Follow(db.Model):
 
     @staticmethod
     def get(src_user_id, dst_user_id):
-        return Response.query.get(src_user_id=src_user_id, dst_user_id=dst_user_id)
+        return Follow.query.filter_by(src_user_id=src_user_id, dst_user_id=dst_user_id).first()
 
     def save(self):
         db.session.add(self)
