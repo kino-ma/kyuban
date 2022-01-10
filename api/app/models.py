@@ -144,6 +144,10 @@ class Response(db.Model):
                            default=datetime.now, onupdate=datetime.now)
 
     @staticmethod
+    def get(id):
+        return Response.query.get(id)
+
+    @staticmethod
     def get_all():
         return Response.query.all()
 

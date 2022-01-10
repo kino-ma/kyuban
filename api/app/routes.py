@@ -138,6 +138,12 @@ def create_thread():
     return jsonify({"thread": thread.json(), "success": True}), 201
 
 
+@ app.route('/response/<id>', methods=['GET'])
+def get_one_response(id):
+    response = Response.get(id)
+    return jsonify({"response": response.json(), "success": True})
+
+
 @ app.route('/response', methods=['GET'])
 def get_response():
     sender_id = request.args.get('sender')
