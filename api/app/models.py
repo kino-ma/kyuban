@@ -194,6 +194,11 @@ class Response(db.Model):
         }
 
     @staticmethod
+    def get_from_users(users):
+        ids = [u.id for u in users]
+        return Response.query.filter(Response.id.in_(ids)).all()
+
+    @staticmethod
     def lookup(sender):
         response = Response.query.filter_by(sender=sender)
         return response

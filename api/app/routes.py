@@ -181,6 +181,17 @@ def create_response():
     return jsonify({"response": response.json(), "success": True}), 201
 
 
+@app.route("/response/feed", methods=["GET"])
+@login_required
+def thread_feed():
+    followees = current_user.followees()
+    responses = Response.get_from_users(followees)
+
+    return jsonify({
+        "responses": [r.json() for r in responses]
+    })
+
+
 @ app.route("/follow/<target_id>", methods=["POST"])
 @login_required
 def follow_someone(target_id):
