@@ -192,3 +192,28 @@ def follow_someone(target_id):
     follow.save()
 
     return jsonify({"success": True}), 201
+
+
+@ app.route("/follow/<target_id>", methods=["DELETE"])
+@login_required
+def unfollow_someone(target_id):
+    src = current_user.id
+
+    dst_user = User.get(target_id)
+    if not dst_user:
+        return jsonify({
+            "success": False,
+            "error": f"user with id {target_id} was not found"
+        }), 404
+
+    follow = Follow.get(src_user_id=src, dst_user_id=dst_user.id)
+
+    if not follow:
+        return jsonify({
+            "success": False,
+            "error": f"you do not follow user with id {target_id}"
+        }), 404
+
+    follow.delete()
+
+    return jsonify({"success": True})
