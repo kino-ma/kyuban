@@ -189,7 +189,7 @@ def thread_feed():
     responses = Response.get_from_users(followees)
 
     return jsonify({
-        "responses": [r.json() for r in responses]
+        "responses": [r.json_with_thread() for r in responses]
     })
 
 

@@ -193,10 +193,16 @@ class Response(db.Model):
             "updatedAt": self.updated_at.isoformat()
         }
 
+    def json_with_thread(self):
+        json = self.json()
+        thread = self.receive_thread
+        json["thread"] = thread.json()
+        return json
+
     @staticmethod
     def get_from_users(users):
         ids = [u.id for u in users]
-        return Response.query.filter(Response.id.in_(ids)).all()
+        return Response.query.filter(Response.sender_id.in_(ids)).all()
 
     @staticmethod
     def lookup(sender):
