@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { get } from "../common/api";
-import { getCurrentUser } from "../common/auth";
+import { getCurrentUser, getSession } from "../common/auth";
 import { ResponseData, ThreadData, UserData } from "../common/types";
 import { ResponseCard } from "../components/ResponseCard";
 
@@ -18,8 +18,9 @@ const Home: NextPage<IHomeProps> = ({ responses, threads }) => {
 };
 
 Home.getInitialProps = async (ctx) => {
-  const user = getCurrentUser(ctx);
-  const responsesResp = await get("/response/feed");
+  const session = getSession(ctx);
+
+  const responsesResp = await get("/response/feed", { session });
   const threadsResp = await get("/thread");
 
   const responses = await responsesResp.json();

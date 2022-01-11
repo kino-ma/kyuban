@@ -28,3 +28,10 @@ export const getCurrentUser = (ctx?: NextPageContext): UserData | null => {
     }
   }
 };
+
+export const getSession = (ctx?: NextPageContext): string | null => {
+  const cookies = nookies.get(ctx);
+  const { session } = cookies;
+
+  return session;
+};
