@@ -61,3 +61,10 @@ export const post = (
 export const get = (path: string, options?: apiOptions): Promise<Response> => {
   return call("GET", path, null, options);
 };
+
+export const delete_ = (
+  path: string,
+  options?: apiOptions
+): Promise<Response> => {
+  return call("DELETE", path, null, options);
+};
