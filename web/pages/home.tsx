@@ -1,20 +1,32 @@
 import { NextPage } from "next";
+import React from "react";
 import { get } from "../common/api";
 import { getCurrentUser, getSession } from "../common/auth";
-import { ResponseData, ThreadData, UserData } from "../common/types";
-import { ResponseCard } from "../components/ResponseCard";
+import { ResponseAndThreadData, ThreadData } from "../common/types";
+import { ResponseCard } from "../components/responseCard";
+import { ThreadCard } from "../components/threadCard";
 
 interface IHomeProps {
-  responses: ResponseData[];
+  responses: ResponseAndThreadData[];
   threads: ThreadData[];
 }
 
 const Home: NextPage<IHomeProps> = ({ responses, threads }) => {
   console.log({ threads, responses });
-  const thread = threads[0];
-  const response = responses[0];
-  console.log({ thread, response });
-  return <ResponseCard {...{ thread, response }} />;
+
+  const responseItems = responses.map((response) => (
+    <ResponseCard {...{ response }} />
+  ));
+  const threadITems = threads.map((thread) => <ThreadCard {...{ thread }} />);
+
+  return (
+    <React.Fragment>
+      <h3>Feed</h3>
+      <div>{responseItems}</div>
+      <h3>Threads</h3>
+      <div>{threadITems}</div>
+    </React.Fragment>
+  );
 };
 
 Home.getInitialProps = async (ctx) => {

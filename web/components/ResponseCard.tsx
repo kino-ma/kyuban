@@ -1,16 +1,13 @@
 import React from "react";
-import { ResponseData, ThreadData } from "../common/types";
+import { ResponseAndThreadData } from "../common/types";
 import { Response } from "./response";
 
 interface IResponseCardProps {
-  thread: ThreadData;
-  response: ResponseData;
+  response: ResponseAndThreadData;
 }
 
-export const ResponseCard: React.FC<IResponseCardProps> = ({
-  thread,
-  response,
-}) => {
+export const ResponseCard: React.FC<IResponseCardProps> = ({ response }) => {
+  const thread = response.thread;
   return (
     <React.Fragment>
       <h4>{thread.title}</h4>
