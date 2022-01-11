@@ -195,6 +195,17 @@ def thread_feed():
     })
 
 
+@ app.route("/follow/<target_id>", methods=["GET"])
+@login_required
+def show_follow(target_id):
+    me = current_user.id
+    you = target_id
+    following = Follow.get(me, you)
+    followed = Follow.get(you, me)
+
+    return jsonify({"following": bool(following), "followed": bool(followed), "success": True})
+
+
 @ app.route("/follow/<target_id>", methods=["POST"])
 @login_required
 def follow_someone(target_id):
