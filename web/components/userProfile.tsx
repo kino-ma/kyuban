@@ -16,7 +16,7 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
   following,
   followed,
 }) => {
-  const handleSubmit: FollowButtonEventHandler = async (_evt) => {
+  const handleFollow: FollowButtonEventHandler = async (_evt) => {
     const uri = `/follow/${user.id}`;
     const resp = await post(uri);
     await resp.json();
@@ -27,6 +27,8 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
     alert("既にフォローしています");
   };
 
+  const followedText = followed ? <p>あなたをフォローしています</p> : null;
+
   return (
     <React.Fragment>
       <h3>
@@ -36,9 +38,10 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
         <FollowButton
           following={following}
           onClickFollowing={handleFollowing}
-          onClickNotFollowing={handleFollowing}
+          onClickNotFollowing={handleFollow}
         />
       </div>
+      {followedText}
     </React.Fragment>
   );
 };
