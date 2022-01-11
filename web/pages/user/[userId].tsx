@@ -1,30 +1,33 @@
-// API からくるデータ：
-/*
-user = { // 引数
-    "id": 1234
-    "name": "kino-ma",
-    "updatedAt": "2021/12/12",
-    "createdAt": "2021/12/12"
-}
-*/
-
 import { get } from "../../common/api";
 import { UserData } from "../../common/types";
 import { UserProfile } from "../../components/userProfile";
 
-const User = ({ user }) => {
+interface IUserProps {
+  user: UserData;
+  following: boolean;
+  followed: boolean;
+}
+
+const User = ({ user, following, followed }) => {
   return (
     <main>
-      <UserProfile {...{ user, following: false, followed: false }} />
+      <UserProfile {...{ user, following, followed }} />
     </main>
   );
 };
 
 // FIXME: error validation
-type GetUserResponse = SuccessResponse;
+type GetUserResponse = GetUserSuccessResponse;
+type GetFollowResponse = GetFollowSuccessResponse;
 
-type SuccessResponse = {
+type GetUserSuccessResponse = {
   user: UserData;
+  success: true;
+};
+
+type GetFollowSuccessResponse = {
+  following: boolean;
+  followed: boolean;
   success: true;
 };
 
@@ -34,10 +37,13 @@ interface ErrorResponse {
 }
 
 User.getInitialProps = async ({ query }) => {
-  const res = await get(`/user/${query.userId}`);
-  const { user }: GetUserResponse = await res.json();
+  const getUserRes = await get(`/user/${query.userId}`);
+  const { user }: GetUserResponse = await getUserRes.json();
 
-  return { user };
+  const getFollowRes = await get(`/follow/${query.userId}`);
+  const { following, followed }: GetFollowResponse = await getFollowRes.json();
+
+  return { user, following, followed };
 };
 
 export default User;

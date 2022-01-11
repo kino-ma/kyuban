@@ -1,5 +1,5 @@
-import React, { MouseEventHandler } from "react";
-import { post } from "../common/api";
+import React, { MouseEventHandler, useState } from "react";
+import { delete_, post } from "../common/api";
 import { UserData } from "../common/types";
 import { Button } from "./button";
 import { FollowButton, FollowButtonEventHandler } from "./followButton";
@@ -16,15 +16,31 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
   following,
   followed,
 }) => {
+  const [followState, setFollowState] = useState(following);
+
   const handleFollow: FollowButtonEventHandler = async (_evt) => {
     const uri = `/follow/${user.id}`;
     const resp = await post(uri);
-    await resp.json();
+    const { success } = await resp.json();
+
+    if (success) {
+      setFollowState(true);
+    }
   };
 
   const handleFollowing: FollowButtonEventHandler = async (_evt) => {
-    console.log("following clicked");
-    alert("既にフォローしています");
+    const sure = confirm(`${user.name} さんのフォローを外しますか？`);
+    if (!sure) {
+      return;
+    }
+
+    const uri = `/follow/${user.id}`;
+    const resp = await delete_(uri);
+    const { success } = await resp.json();
+
+    if (success) {
+      setFollowState(false);
+    }
   };
 
   const followedText = followed ? <p>あなたをフォローしています</p> : null;
@@ -36,7 +52,7 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
       </h3>
       <div>
         <FollowButton
-          following={following}
+          following={followState}
           onClickFollowing={handleFollowing}
           onClickNotFollowing={handleFollow}
         />

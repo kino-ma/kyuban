@@ -13,7 +13,7 @@ export const FollowButton: React.FC<
   IFollowButtonProps & React.HTMLAttributes<HTMLButtonElement>
 > = ({ following, onClickFollowing, onClickNotFollowing, ...props }) => {
   const onClick = following ? onClickFollowing : onClickNotFollowing;
-  const text = following ? "フォローする" : "フォロー済み";
+  const text = following ? "フォロー済み" : "フォローする";
 
   const button = (
     <Button {...{ ...props, onClick: async (evt) => await onClick(evt) }}>
