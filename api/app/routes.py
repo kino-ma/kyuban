@@ -96,6 +96,8 @@ def create_user():
     user_auth = UserAuth(user_id=user.id, password_hash=password_hash)
     user_auth.save()
 
+    login_user(user)
+
     return jsonify({"user": user.json(), "success": True}), 201
 
 
