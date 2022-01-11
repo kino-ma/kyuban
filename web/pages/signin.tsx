@@ -31,7 +31,6 @@ const SignIn = () => {
     try {
       evt.preventDefault();
 
-      // FIXME: get user from session
       const resp = await post("/signin", {
         email,
         password,
