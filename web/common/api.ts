@@ -21,7 +21,7 @@ export const post = (
   options: apiOptions
 ): Promise<Response> => {
   const params = new URLSearchParams(data);
-  let { isServerSide, session } = options;
+  let { isServerSide, session } = options ?? {};
 
   if (typeof isServerSide === "undefined") {
     isServerSide = !checkClientSide();

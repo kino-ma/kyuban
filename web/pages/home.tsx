@@ -23,8 +23,8 @@ Home.getInitialProps = async (ctx) => {
   const responsesResp = await get("/response/feed", { session });
   const threadsResp = await get("/thread");
 
-  const responses = await responsesResp.json();
-  const threads = await threadsResp.json();
+  const { responses } = await responsesResp.json();
+  const { threads } = await threadsResp.json();
 
   return {
     responses,
