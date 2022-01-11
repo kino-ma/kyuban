@@ -1,8 +1,8 @@
-import React from "react";
+import React, { MouseEventHandler } from "react";
 import { post } from "../common/api";
 import { UserData } from "../common/types";
 import { Button } from "./button";
-import { FollowButton } from "./followButton";
+import { FollowButton, FollowButtonEventHandler } from "./followButton";
 import { UserName } from "./userName";
 
 interface IUserProfileProps {
@@ -16,10 +16,15 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
   following,
   followed,
 }) => {
-  const handleSubmit = async (_evt) => {
+  const handleSubmit: FollowButtonEventHandler = async (_evt) => {
     const uri = `/follow/${user.id}`;
     const resp = await post(uri);
     await resp.json();
+  };
+
+  const handleFollowing: FollowButtonEventHandler = async (_evt) => {
+    console.log("following clicked");
+    alert("既にフォローしています");
   };
 
   return (
@@ -30,8 +35,8 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
       <div>
         <FollowButton
           following={following}
-          onClickFollowing={handleSubmit}
-          onClickNotFollowing={handleSubmit}
+          onClickFollowing={handleFollowing}
+          onClickNotFollowing={handleFollowing}
         />
       </div>
     </React.Fragment>

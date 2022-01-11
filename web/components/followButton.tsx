@@ -1,20 +1,22 @@
-import { MouseEventHandler } from "react";
+import { MouseEvent } from "react";
 import { Button } from "./button";
 
 interface IFollowButtonProps {
   following: boolean;
-  onClickFollowing: MouseEventHandler<HTMLButtonElement>;
-  onClickNotFollowing: MouseEventHandler<HTMLButtonElement>;
+  onClickFollowing: FollowButtonEventHandler;
+  onClickNotFollowing: FollowButtonEventHandler;
 }
 
+export type FollowButtonEventHandler = (event: MouseEvent) => Promise<void>;
+
 export const FollowButton: React.FC<
-  IFollowButtonProps & React.HTMLProps<HTMLButtonElement>
+  IFollowButtonProps & React.HTMLAttributes<HTMLButtonElement>
 > = ({ following, onClickFollowing, onClickNotFollowing, ...props }) => {
   const onClick = following ? onClickFollowing : onClickNotFollowing;
   const text = following ? "フォローする" : "フォロー済み";
 
   const button = (
-    <Button onClick={onClick} {...props}>
+    <Button {...{ ...props, onClick: async (evt) => await onClick(evt) }}>
       {text}
     </Button>
   );
