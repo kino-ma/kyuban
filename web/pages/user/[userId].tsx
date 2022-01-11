@@ -10,11 +10,14 @@ user = { // 引数
 
 import { get } from "../../common/api";
 import { UserData } from "../../common/types";
+import { UserProfile } from "../../components/userProfile";
 
-// minamiku-san
 const User = ({ user }) => {
-  // ここを編集する
-  return user.name;
+  return (
+    <main>
+      <UserProfile {...{ user, following: false, followed: false }} />
+    </main>
+  );
 };
 
 // FIXME: error validation
