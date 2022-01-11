@@ -1,4 +1,6 @@
 FROM node:14-alpine AS dev
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 CMD ["node_modules/.bin/next", "dev"]
 
 # Install dependencies only when needed
