@@ -33,5 +33,9 @@ export const getSession = (ctx?: NextPageContext): string | null => {
   const cookies = nookies.get(ctx);
   const { session } = cookies;
 
+  if (typeof session === "undefined") {
+    throw TypeError("no session");
+  }
+
   return session;
 };

@@ -18,7 +18,7 @@ type apiOptions = {
 export const post = (
   path: string,
   data: Record<string, string>,
-  options: apiOptions
+  options?: apiOptions
 ): Promise<Response> => {
   const params = new URLSearchParams(data);
   let { isServerSide, session } = options ?? {};
