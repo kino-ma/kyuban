@@ -138,6 +138,7 @@ def create_thread():
 
     first_response = Response(
         sender=current_user, content=first_content, receive_thread__id=thread.id)
+    first_response.save()
 
     thread = thread.get(thread.id)
     return jsonify({"thread": thread.json(), "success": True}), 201

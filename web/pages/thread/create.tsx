@@ -21,13 +21,13 @@ interface ErrorResponse {
 const CreateThread: React.FC = () => {
   const router = useRouter();
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [content, setContent] = useState("");
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (evt) => {
     try {
       evt.preventDefault();
 
-      const resp = await post("/thread", { title });
+      const resp = await post("/thread", { title, content });
       const { thread }: CreateThreadResponse = await resp.json();
 
       router.push(`/thread/${thread.id}`);
@@ -59,7 +59,7 @@ const CreateThread: React.FC = () => {
             <br />
             <textarea
               name="content"
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => setContent(e.target.value)}
             />
           </label>
           <br />
