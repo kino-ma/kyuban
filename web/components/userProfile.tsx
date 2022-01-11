@@ -9,12 +9,14 @@ interface IUserProfileProps {
   user: UserData;
   following: boolean;
   followed: boolean;
+  isMe: boolean;
 }
 
 export const UserProfile: React.FC<IUserProfileProps> = ({
   user,
   following,
   followed,
+  isMe,
 }) => {
   const [followState, setFollowState] = useState(following);
 
@@ -45,18 +47,22 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
 
   const followedText = followed ? <p>あなたをフォローしています</p> : null;
 
+  const followButton = !isMe ? (
+    <div>
+      <FollowButton
+        following={followState}
+        onClickFollowing={handleFollowing}
+        onClickNotFollowing={handleFollow}
+      />
+    </div>
+  ) : null;
+
   return (
     <React.Fragment>
       <h3>
         <UserName {...{ user }} />
       </h3>
-      <div>
-        <FollowButton
-          following={followState}
-          onClickFollowing={handleFollowing}
-          onClickNotFollowing={handleFollow}
-        />
-      </div>
+      {followButton}
       {followedText}
     </React.Fragment>
   );

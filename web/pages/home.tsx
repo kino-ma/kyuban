@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React from "react";
 import { get } from "../common/api";
-import { getCurrentUser, getSession } from "../common/auth";
+import { getSession } from "../common/auth";
 import { ResponseAndThreadData, ThreadData } from "../common/types";
 import { ResponseCard } from "../components/responseCard";
 import { ThreadCard } from "../components/threadCard";
@@ -12,8 +12,6 @@ interface IHomeProps {
 }
 
 const Home: NextPage<IHomeProps> = ({ responses, threads }) => {
-  console.log({ threads, responses });
-
   const responseItems =
     responses.length > 0 ? (
       responses.map((response) => <ResponseCard {...{ response }} />)
