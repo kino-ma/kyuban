@@ -25,10 +25,12 @@ const Home: NextPage<IHomeProps> = ({ responses, threads }) => {
 
   return (
     <React.Fragment>
-      <h3>Feed</h3>
-      <div>{responseItems}</div>
-      <h3>Threads</h3>
-      <div>{threadItems}</div>
+      <main>
+        <h3>Feed</h3>
+        <div>{responseItems}</div>
+        <h3>Threads</h3>
+        <div>{threadItems}</div>
+      </main>
     </React.Fragment>
   );
 };
