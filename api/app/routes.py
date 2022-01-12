@@ -218,6 +218,12 @@ def follow_someone(target_id):
             "error": f"user with id {target_id} was not found"
         }), 404
 
+    if Follow.get(src, dst_user.id):
+        return jsonify({
+            "success": False,
+            "error": "you have already followed user {dst_user.id}"
+        }), 400
+
     follow = Follow(src_user_id=src, dst_user_id=dst_user.id)
     follow.save()
 
