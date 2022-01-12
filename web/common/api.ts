@@ -1,14 +1,13 @@
-// const PORT = 5000;
-const PORT = 80;
+const PORT = 5000;
 
 const checkClientSide = (): boolean => {
   return typeof window !== "undefined";
 };
 
 const getBaseUrl = (isServerSide: boolean): string => {
-  // const host = isServerSide ? "api" : "localhost";
-  const host = "";
+  const host = isServerSide ? "api" : "localhost";
   const baseUrl = `http://${host}:${PORT}`;
+  // const baseUrl = "/api";
   return baseUrl;
 };
 
