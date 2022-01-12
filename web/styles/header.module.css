@@ -1,0 +1,13 @@
+.header__item {
+  height: 40px;
+  margin-left: 2px;
+  margin-right: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  /* color: var(--cream); */
+  transition: 0.2s;
+}
+
+.header__item:hover {
+  background-color: var(--green2);
+}
