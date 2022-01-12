@@ -206,7 +206,7 @@ class Response(db.Model):
 
     @staticmethod
     def lookup(sender):
-        response = Response.query.filter_by(sender=sender)
+        response = Response.query.filter_by(sender=sender).all()
         return response
 
 

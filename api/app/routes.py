@@ -161,7 +161,7 @@ def get_response():
         responses = Response.lookup(sender)
     else:
         responses = Response.get_all()
-    return jsonify({"responses": [t.json_with_thread() for t in responses]})
+    return jsonify({"responses": [t.json_with_thread() for t in reversed(responses)]})
 
 
 @ app.route("/response", methods=["POST"])
