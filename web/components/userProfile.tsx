@@ -60,7 +60,7 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
   return (
     <React.Fragment>
       <h3>
-        <UserName {...{ user }} />
+        <UserName {...{ user }} /> さん
       </h3>
       {followButton}
       {followedText}
