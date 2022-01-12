@@ -1,17 +1,56 @@
 import { NextPage } from "next";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { get } from "../common/api";
 import { getSession } from "../common/auth";
 import { ResponseAndThreadData, ThreadData } from "../common/types";
 import { ResponseCard } from "../components/responseCard";
 import { ThreadCard } from "../components/threadCard";
 
-interface IHomeProps {
-  responses: ResponseAndThreadData[];
+type GetThreadsResponse = GetThreadsSuccessResponse;
+type GetResponsesResponse = GetResponsesSuccessResponse;
+
+type GetThreadsSuccessResponse = {
   threads: ThreadData[];
+  success: true;
+};
+
+type GetResponsesSuccessResponse = {
+  responses: ResponseAndThreadData[];
+  success: true;
+};
+
+interface ErrorResponse {
+  success: false | undefined;
+  error: false | undefined;
 }
 
-const Home: NextPage<IHomeProps> = ({ responses, threads }) => {
+// TODO: usestate to responses/threads
+const Home: NextPage = () => {
+  const [threads, setThreads] = useState<ThreadData[]>([]);
+  const [responses, setResponses] = useState<ResponseAndThreadData[]>([]);
+
+  useEffect(() => {
+    get(`/thread`)
+      .then((resp) => {
+        return resp.json();
+      })
+      .then((json: GetThreadsResponse) => {
+        const { threads } = json;
+        setThreads(threads);
+      });
+  }, []);
+
+  useEffect(() => {
+    get(`/response/feed`)
+      .then((resp) => {
+        return resp.json();
+      })
+      .then((json: GetResponsesResponse) => {
+        const { responses } = json;
+        setResponses(responses);
+      });
+  }, []);
+
   const responseItems =
     responses.length > 0 ? (
       responses.map((response) => <ResponseCard {...{ response }} />)
@@ -19,7 +58,9 @@ const Home: NextPage<IHomeProps> = ({ responses, threads }) => {
       <p>フォローしているユーザのレスポンスがここに表示されます</p>
     );
 
-  const threadItems = threads.map((thread) => <ThreadCard {...{ thread }} />);
+  const threadItems = threads.map((thread) =>
+    threads.length > 0 ? <ThreadCard {...{ thread }} /> : "読み込み中..."
+  );
 
   return (
     <React.Fragment>
