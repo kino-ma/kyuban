@@ -62,7 +62,7 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
   return (
     <React.Fragment>
       <div className={styles.profile}>
-        <Icon name={user.name} />
+        <Icon user={user} />
         <h3>
           <UserName {...{ user }} /> さん
         </h3>

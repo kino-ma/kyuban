@@ -13,7 +13,7 @@ export const ThreadCard: React.FC<IThreadCardProps> = ({ thread }) => {
     <React.Fragment>
       <ThreadTitle {...{ thread }} />
       <div style={{ margin: "1em" }}>
-        <Icon name={response.sender.name} size={30} />
+        <Icon user={response.sender} size={30} />
         <Response {...response} />
       </div>
     </React.Fragment>
