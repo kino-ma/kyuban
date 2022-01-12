@@ -11,6 +11,7 @@ import {
 import { ResponseCard } from "../../components/responseCard";
 import { UserProfile } from "../../components/userProfile";
 import styles from "../../styles/profile.module.css";
+import responseStyles from "../../styles/card.module.css";
 
 interface IUserProps {
   user: UserData;
@@ -51,11 +52,17 @@ const User: NextPage<IUserProps> = ({ user, following, followed, me }) => {
 
   return (
     <main>
-      <UserProfile {...{ user, following, followed, isMe }} />
-      <h3 className={styles.field__heading}>
-        {user.name} さんが投稿したレスポンス
-      </h3>
-      {responseItems}
+      <div className={styles.container}>
+        <div className={styles.column}>
+          <UserProfile {...{ user, following, followed, isMe }} />
+        </div>
+        <div className={styles.column}>
+          <h3 className={styles.field__heading}>
+            {user.name} さんが投稿したレスポンス
+          </h3>
+          {responseItems}
+        </div>
+      </div>
     </main>
   );
 };
