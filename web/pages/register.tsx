@@ -77,7 +77,7 @@ const Register = () => {
             パスワード:
             <br />
             <input
-              type="text"
+              type="password"
               name="password"
               onChange={(e) =>
                 setFormInput({ ...formInput, password: e.target.value })

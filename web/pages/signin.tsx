@@ -68,6 +68,7 @@ const SignIn = () => {
               </div>
               <div className={form.singin__form}>
                 <input
+                  type="password"
                   style={{ outline: "none", border: "none" }}
                   placeholder="パスワード"
                   onChange={(e) => setPassword(e.target.value)}
