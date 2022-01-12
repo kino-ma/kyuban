@@ -16,3 +16,17 @@
   align-items: center;
   justify-content: space-evenly;
 }
+
+.threads__container {
+  width: 380px;
+  padding: 2rem;
+  margin: 1rem;
+  border: 1px solid var(--green1);
+  border-radius: 8px;
+  display: flex;
+  flex-flow: column;
+}
+
+.threads__container h3 {
+  text-align: center;
+}
