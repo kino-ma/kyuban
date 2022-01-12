@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -23,3 +23,8 @@ from app import routes, models  # this line must be at the bottom
 @login_manager.user_loader
 def load_user(user_id):
     return models.User.get(int(user_id))
+
+
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    return jsonify({"error": "please signin first"}), 401

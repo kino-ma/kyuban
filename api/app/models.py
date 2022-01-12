@@ -43,13 +43,41 @@ class User(UserMixin, db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def json(self):
-        return {
+    def followers(self):
+        follows = Follow.followers_of(self.id)
+
+        users = []
+        for f in follows:
+            user = User.get(f.dst_user_id)
+            users.append(user)
+
+        return users
+
+    def followees(self):
+        follows = Follow.follwees_of(self.id)
+
+        users = []
+        for f in follows:
+            user = User.get(f.dst_user_id)
+            users.append(user)
+
+        return users
+
+    def json(self, follows=True):
+        data = {
             "id": self.id,
             "name": self.name,
             "createdAt": self.created_at.isoformat(),
             "updatedAt": self.updated_at.isoformat()
         }
+
+        if follows:
+            data["followers"] = [u.json(follows=False)
+                                 for u in self.followers()]
+            data["followees"] = [u.json(follows=False)
+                                 for u in self.followees()]
+
+        return data
 
     @staticmethod
     def lookup(email=None, name=None):
@@ -144,6 +172,10 @@ class Response(db.Model):
                            default=datetime.now, onupdate=datetime.now)
 
     @staticmethod
+    def get(id):
+        return Response.query.get(id)
+
+    @staticmethod
     def get_all():
         return Response.query.all()
 
@@ -161,7 +193,50 @@ class Response(db.Model):
             "updatedAt": self.updated_at.isoformat()
         }
 
+    def json_with_thread(self):
+        json = self.json()
+        thread = self.receive_thread
+        json["thread"] = thread.json()
+        return json
+
+    @staticmethod
+    def get_from_users(users):
+        ids = [u.id for u in users]
+        return Response.query.filter(Response.sender_id.in_(ids)).all()
+
     @staticmethod
     def lookup(sender):
         response = Response.query.filter_by(sender=sender)
         return response
+
+
+class Follow(db.Model):
+
+    __tablename__ = 'follows'
+
+    id = db.Column(db.Integer, primary_key=True)
+    src_user_id = db.Column(db.Integer, ForeignKey(User.id), nullable=False)
+    dst_user_id = db.Column(db.Integer, ForeignKey(User.id), nullable=False)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+
+    @staticmethod
+    def get(src_user_id, dst_user_id):
+        return Follow.query.filter_by(src_user_id=src_user_id, dst_user_id=dst_user_id).first()
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    @staticmethod
+    def followers_of(user_id):
+        followers = Follow.query.filter_by(dst_user_id=user_id)
+        return followers
+
+    @staticmethod
+    def follwees_of(user_id):
+        followers = Follow.query.filter_by(src_user_id=user_id)
+        return followers

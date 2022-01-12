@@ -21,3 +21,13 @@ export type ResponseData = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type ResponseAndThreadData = {
+  id: number;
+  receiveThreadId: number;
+  sender: UserData;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  thread: ThreadData;
+};
