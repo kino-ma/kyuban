@@ -16,7 +16,12 @@ export const Icon: React.FC<IIconProps> = ({ name, size = 50 }) => {
   return (
     <div
       className={styles.icon}
-      style={{ height: size, width: size, lineHeight: size + "px" }}
+      style={{
+        height: size,
+        width: size,
+        fontSize: size / 2 + "px",
+        lineHeight: size + "px",
+      }}
     >
       {charcter}
     </div>
