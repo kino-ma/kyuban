@@ -1,7 +1,13 @@
 import { NextPage } from "next";
+import { useState, useEffect } from "react";
 import { get } from "../../common/api";
 import { useMe } from "../../common/auth";
-import { UserData } from "../../common/types";
+import {
+  ResponseAndThreadData,
+  ResponseData,
+  UserData,
+} from "../../common/types";
+import { ResponseCard } from "../../components/responseCard";
 import { UserProfile } from "../../components/userProfile";
 
 interface IUserProps {
@@ -11,12 +17,40 @@ interface IUserProps {
   me: UserData;
 }
 
+type GetResponsesResponse = GetResponsesSuccessResponse;
+
+type GetResponsesSuccessResponse = {
+  responses: ResponseAndThreadData[];
+  success: true;
+};
+
+// TODO: respnoses become empty sometimes
 const User: NextPage<IUserProps> = ({ user, following, followed, me }) => {
   const isMe = me.id === user.id;
+  const [responses, setResponses] = useState<ResponseAndThreadData[]>([]);
+
+  useEffect(() => {
+    get(`/response?sender=${user.id}`)
+      .then((resp) => {
+        return resp.json();
+      })
+      .then((json: GetResponsesSuccessResponse) => {
+        const { responses } = json;
+        setResponses(responses);
+      });
+  }, [user]);
+
+  const responseItems =
+    responses.length > 0 ? (
+      responses.map((r) => <ResponseCard response={r} />)
+    ) : (
+      <p>読み込み中...</p>
+    );
 
   return (
     <main>
       <UserProfile {...{ user, following, followed, isMe }} />
+      {responseItems}
     </main>
   );
 };
