@@ -156,3 +156,20 @@ flask run
 ### 1. `.env` ファイルの更新
 1. `cp .env.template .env`
 2. `.env.template` に従って、実際の環境変数をセットしていく。
+
+### 2. Docker のビルド
+```sh
+docker-compose --profile prod build
+```
+
+### 3. 環境の初期化
+```sh
+docker-copmose run api flask db upgrade
+```
+
+### 4. 起動
+```sh
+docker-compose --profile prod up
+```
+
+`80` 番ポートに開く．

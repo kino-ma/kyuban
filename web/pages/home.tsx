@@ -5,6 +5,7 @@ import { getSession } from "../common/auth";
 import { ResponseAndThreadData, ThreadData } from "../common/types";
 import { ResponseCard } from "../components/responseCard";
 import { ThreadCard } from "../components/threadCard";
+import cards from "../styles/card.module.css";
 
 type GetThreadsResponse = GetThreadsSuccessResponse;
 type GetResponsesResponse = GetResponsesSuccessResponse;
@@ -24,7 +25,6 @@ interface ErrorResponse {
   error: false | undefined;
 }
 
-// TODO: usestate to responses/threads
 const Home: NextPage = () => {
   const [threads, setThreads] = useState<ThreadData[]>([]);
   const [responses, setResponses] = useState<ResponseAndThreadData[]>([]);
@@ -64,11 +64,15 @@ const Home: NextPage = () => {
 
   return (
     <React.Fragment>
-      <main>
-        <h3>Feed</h3>
-        <div>{responseItems}</div>
-        <h3>Threads</h3>
-        <div>{threadItems}</div>
+      <main style={{ display: "flex", flexFlow: "row" }}>
+        <div className={cards.threads__container}>
+          <h3>ホーム</h3>
+          <div>{responseItems}</div>
+        </div>
+        <div className={cards.threads__container}>
+          <h3>スレッド一覧</h3>
+          <div>{threadItems}</div>
+        </div>
       </main>
     </React.Fragment>
   );

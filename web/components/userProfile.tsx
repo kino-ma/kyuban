@@ -3,7 +3,9 @@ import { delete_, post } from "../common/api";
 import { UserData } from "../common/types";
 import { Button } from "./button";
 import { FollowButton, FollowButtonEventHandler } from "./followButton";
+import { Icon } from "./icon";
 import { UserName } from "./userName";
+import styles from "../styles/card.module.css";
 
 interface IUserProfileProps {
   user: UserData;
@@ -59,11 +61,14 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
 
   return (
     <React.Fragment>
-      <h3>
-        <UserName {...{ user }} />
-      </h3>
-      {followButton}
-      {followedText}
+      <div className={styles.profile}>
+        <Icon user={user} />
+        <h3>
+          <UserName {...{ user }} /> さん
+        </h3>
+        {followButton}
+        {followedText}
+      </div>
     </React.Fragment>
   );
 };

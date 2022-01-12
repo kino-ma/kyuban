@@ -7,6 +7,7 @@ const checkClientSide = (): boolean => {
 const getBaseUrl = (isServerSide: boolean): string => {
   const host = isServerSide ? "api" : "localhost";
   const baseUrl = `http://${host}:${PORT}`;
+  // const baseUrl = "/api";
   return baseUrl;
 };
 

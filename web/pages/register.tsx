@@ -32,6 +32,13 @@ const Register = () => {
     try {
       evt.preventDefault();
       const resp = await post("/user", formInput);
+
+      if (!resp.ok) {
+        const json = await resp.json();
+        alert("サインイに失敗しました..." + json.error);
+        return;
+      }
+
       const { user }: CreateUserResponse = await resp.json();
 
       saveCurrentUser(user);
