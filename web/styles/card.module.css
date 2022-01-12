@@ -17,6 +17,13 @@
   justify-content: space-evenly;
 }
 
+.profile {
+  width: 300px;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+}
+
 .threads__container {
   width: 380px;
   padding: 2rem;
