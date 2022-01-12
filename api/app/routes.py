@@ -104,7 +104,7 @@ def create_user():
 @app.route('/thread', methods=['GET'])
 def get_thread():
     threads = Thread.get_all()
-    return jsonify({"threads": [t.json() for t in threads]})
+    return jsonify({"threads": [t.json() for t in reversed(threads)]})
 
 
 @app.route('/thread/<id>', methods=['GET'])
