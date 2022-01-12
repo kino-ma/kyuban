@@ -36,6 +36,12 @@ const SignIn = () => {
         password,
       });
 
+      if (!resp.ok) {
+        const json = await resp.json();
+        alert("サインイに失敗しました..." + json.error);
+        return;
+      }
+
       const { user }: SigninResponse = await resp.json();
       saveCurrentUser(user);
 
