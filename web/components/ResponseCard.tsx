@@ -1,5 +1,6 @@
 import React from "react";
 import { ResponseAndThreadData } from "../common/types";
+import { Icon } from "./icon";
 import { Response } from "./response";
 import { ThreadTitle } from "./threadTitle";
 
@@ -12,7 +13,8 @@ export const ResponseCard: React.FC<IResponseCardProps> = ({ response }) => {
   return (
     <React.Fragment>
       <ThreadTitle {...{ thread }} />
-      <div>
+      <div style={{ margin: "1em" }}>
+        <Icon name={response.sender.name} size={30} />
         <Response {...response} />
       </div>
     </React.Fragment>
