@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { get } from "../common/api";
 import { getSession } from "../common/auth";
@@ -84,6 +85,7 @@ type ResponseFeedResponse = {
 };
 
 Home.getInitialProps = async (ctx) => {
+  const router = useRouter();
   let responses: ResponseAndThreadData[];
 
   try {
@@ -94,8 +96,10 @@ Home.getInitialProps = async (ctx) => {
   } catch (err) {
     if (!(err instanceof TypeError)) {
       throw err;
+    } else {
+      alert("ログインしてください");
+      // router.push("/");
     }
-    responses = [];
   }
 
   const threadsResp = await get("/thread");
