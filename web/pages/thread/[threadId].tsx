@@ -10,6 +10,7 @@ import { ResponseForm } from "../../components/responseForm";
 import styles from "../../styles/Home.module.css";
 import threads from "../../styles/thread.module.css";
 import button from "../../styles/button.module.css";
+import { ResponseItem } from "../../components/ResponseItem";
 
 // FIXME: error validation
 type GetThreadResponse = SuccessResponse;
@@ -33,9 +34,7 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
 
   const [responses, setResponses] = useState(thread.responses);
   const responseItems = responses.map((response) => (
-    <li key={response.id}>
-      <Response {...response} />
-    </li>
+    <ResponseItem {...{ response }} key={response.id} />
   ));
 
   const postRequestHook = (response: ResponseData): void => {
@@ -55,21 +54,7 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
           <div className={threads.thread__title}>
             <h3 style={{ margin: 0 }}>スレッドタイトル</h3>
           </div>
-          <div className={threads.thread__items}>
-            {(() => {
-              const items = [];
-              for (let i = 0; i < 6; i++) {
-                items.push(
-                  <>
-                    <div className={threads.thread__item__user}>名前</div>
-                    <div className={threads.thread__item__text}>テキスト</div>
-                    <div className={threads.thread__item__date}>日付</div>
-                  </>
-                );
-              }
-              return <div>{items}</div>;
-            })()}
-          </div>
+          <div className={threads.thread__items}>{responseItems}</div>
         </div>
         <div className={threads.thread__container__right}>
           <h3 style={{ margin: 0 }}>レスポンスする</h3>
