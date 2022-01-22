@@ -2,6 +2,8 @@ version: '3.9'
 
 services:
   web:
+    profiles:
+      - dev
     build:
       context: "./web"
       target: "dev"
@@ -13,6 +15,26 @@ services:
     depends_on:
       - api
 
+  nginx:
+    profiles:
+      - prod
+    image: nginx:latest
+    volumes:
+      - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
+    ports:
+      - "80:80"
+    depends_on:
+      - nextjs
+      - api
+    
+
+  nextjs:
+    profiles:
+      - prod
+    build:
+      context: "./web"
+      target: runner
+
   api:
     build: "./api"
     working_dir: "/api"
@@ -22,4 +44,6 @@ services:
       - "5000:5000"
     environment:
       - FLASK_APP=api
-      - FLASK_ENV=development
+      - FLASK_ENV=${FLASK_ENV:-development}
+      # Default secret. See .env.template
+      - API_SECRET_KEY="${API_SECRET_KEY:-68bca9381044dc2ee23aefbfd273c68ea68679a245b5f7e666f8d298696c7bf6}"

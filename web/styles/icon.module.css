@@ -1,0 +1,12 @@
+.icon {
+  text-align: center;
+  vertical-align: middle;
+  background-color: var(--black3);
+  border-radius: 50%;
+  display: inline-block;
+  margin: 4px;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
