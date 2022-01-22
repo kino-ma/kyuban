@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { get } from "../common/api";
 import { getSession } from "../common/auth";
@@ -85,21 +85,31 @@ type ResponseFeedResponse = {
 };
 
 Home.getInitialProps = async (ctx) => {
-  const router = useRouter();
   let responses: ResponseAndThreadData[];
 
   try {
     const session = getSession(ctx);
+
+    // If not logged in, fails with TypeError
     const responsesResp = await get("/response/feed", { session });
     const json: ResponseFeedResponse = await responsesResp.json();
     responses = json.responses;
   } catch (err) {
+    // Generar errors
     if (!(err instanceof TypeError)) {
       throw err;
-    } else {
-      alert("ログインしてください");
-      // router.push("/");
     }
+
+    // If not authorized, redirect
+    if (typeof ctx.res !== "undefined") {
+      ctx.res.setHeader("Location", "/");
+      ctx.res.statusCode = 307; // Temporary redirect
+      ctx.res.end();
+      return {};
+    }
+
+    // Unknown errors
+    throw new Error("エラーが発生しました");
   }
 
   const threadsResp = await get("/thread");

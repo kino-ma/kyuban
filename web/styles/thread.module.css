@@ -1,0 +1,30 @@
+.thread__container__left {
+  width: 50vw;
+  margin-right: 40px;
+}
+.thread__title {
+  background-color: var(--green1);
+  border-radius: 8px 8px 0 0;
+}
+
+.thread__container__right {
+  width: 30vw;
+  padding-top: 16px;
+}
+.thread__input__container {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--green2);
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 20px;
+}
+.thread__input__area {
+  width: 25vw;
+  margin: 16px 0 16px;
+  font-weight: normal;
+  resize: none;
+  border: 1px solid var(--black3);
+}
