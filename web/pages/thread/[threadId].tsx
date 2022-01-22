@@ -54,7 +54,7 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
           <div className={threads.thread__title}>
             <h3 style={{ margin: 0 }}>スレッドタイトル</h3>
           </div>
-          <div className={threads.thread__items}>{responseItems}</div>
+          {responseItems}
         </div>
         <div className={threads.thread__container__right}>
           <h3 style={{ margin: 0 }}>レスポンスする</h3>

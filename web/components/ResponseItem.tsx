@@ -1,6 +1,8 @@
 import React from "react";
 import { ResponseData } from "../common/types";
-import styles from "../styles/thread.module.css";
+import styles from "../styles/responseItem.module.css";
+import { Icon } from "./icon";
+import { UserName } from "./userName";
 
 interface IResponseItemProps {
   response: ResponseData;
@@ -8,10 +10,15 @@ interface IResponseItemProps {
 
 export const ResponseItem = ({ response }: IResponseItemProps) => {
   return (
-    <React.Fragment>
-      <div className={styles.thread__item__user}>{response.sender.name}</div>
-      <div className={styles.thread__item__text}>{response.content}</div>
-      <div className={styles.thread__item__date}>{response.createdAt}</div>
-    </React.Fragment>
+    <div className={styles.container}>
+      <Icon user={response.sender} size={40} />
+      <div className={styles["second-column"]}>
+        <span className={styles["user-name"]}>
+          <UserName user={response.sender} />
+        </span>
+        <span className={styles.content}>{response.content}</span>
+        <span className={styles.date}>{response.createdAt}</span>
+      </div>
+    </div>
   );
 };

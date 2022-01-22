@@ -11,9 +11,7 @@ export const UserName: React.FC<IUserNameProps> = ({ user }) => {
 
   return (
     <Link href={uri}>
-      <a>
-        <b>{user.name}</b>
-      </a>
+      <a>{user.name}</a>
     </Link>
   );
 };
