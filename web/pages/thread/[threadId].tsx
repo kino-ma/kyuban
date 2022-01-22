@@ -7,6 +7,9 @@ import { get } from "../../common/api";
 import { ResponseData, ThreadData } from "../../common/types";
 import { Response } from "../../components/response";
 import { ResponseForm } from "../../components/responseForm";
+import styles from "../../styles/Home.module.css";
+import threads from "../../styles/thread.module.css";
+import button from "../../styles/button.module.css";
 
 // FIXME: error validation
 type GetThreadResponse = SuccessResponse;
@@ -44,10 +47,40 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
       <Head>
         <title>thread</title>
       </Head>
-      <main>
-        <h1>{thread.title}</h1>
-        <ul>{responseItems}</ul>
-        <ResponseForm {...{ threadId: thread.id, postRequestHook }} />
+      <main
+        className={styles.main}
+        style={{ flexFlow: "row", alignItems: "flex-start" }}
+      >
+        <div className={threads.thread__container__left}>
+          <div className={threads.thread__title}>
+            <h3 style={{ margin: 0 }}>スレッドタイトル</h3>
+          </div>
+          <div className={threads.thread__items}>
+            {(() => {
+              const items = [];
+              for (let i = 0; i < 6; i++) {
+                items.push(
+                  <>
+                    <div className={threads.thread__item__user}>名前</div>
+                    <div className={threads.thread__item__text}>テキスト</div>
+                    <div className={threads.thread__item__date}>日付</div>
+                  </>
+                );
+              }
+              return <div>{items}</div>;
+            })()}
+          </div>
+        </div>
+        <div className={threads.thread__container__right}>
+          <h3 style={{ margin: 0 }}>レスポンスする</h3>
+          <div className={threads.thread__input__container}>
+            <textarea className={threads.thread__input__area} rows={6} />
+            <button className={button.button} style={{ marginTop: 0 }}>
+              送信
+            </button>
+          </div>
+        </div>
+        <div className={threads.main}></div>
       </main>
     </React.Fragment>
   );
