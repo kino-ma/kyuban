@@ -69,6 +69,27 @@ class User(UserMixin, db.Model):
 
         return data
 
+    def update_profile(self, name, bio, avatar):
+        if name:
+            self.name = name
+            db.session.add(self)
+
+        if bio:
+            self.profile.bio = bio
+            db.session.add(self.profile)
+
+        if avatar:
+            self.profile.bio = bio
+
+        if bio or avatar:
+            db.session.add(self.profile)
+
+        if avatar or bio or name:
+            db.session.commit()
+            return True
+        else:
+            return False
+
     @staticmethod
     def lookup(email=None, name=None):
         user1 = email and User.query.filter_by(email=email).first()
@@ -114,6 +135,10 @@ class UserProfile(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
     updated_at = db.Column(db.DateTime, nullable=False,
                            default=datetime.now, onupdate=datetime.now)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 class Thread(db.Model):

@@ -7,7 +7,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 from app import app, db
-from app.models import User, UserAuth, Thread, Response, Follow
+from app.models import User, UserAuth, Thread, Response, Follow, UserProfile
 
 
 @app.route('/')
@@ -95,6 +95,22 @@ def create_user():
     login_user(user)
 
     return jsonify({"user": user.json(), "success": True}), 201
+
+
+@ app.route("/user", methods=["PATCH"])
+@login_required
+def update_user():
+    if not current_user.profile:
+        current_user.profile = UserProfile(user_id=current_user.id)
+        current_user.profile.save()
+
+    name = request.form.get("name")
+    bio = request.form.get("bio")
+    avatar = request.form.get("avatar")
+
+    updated = current_user.update_profile(name, bio, avatar)
+
+    return jsonify({"updated": updated})
 
 
 @app.route('/thread', methods=['GET'])
