@@ -134,6 +134,34 @@ def get_thread_with_id(id):
     })
 
 
+@ app.route("/thread/<id>", methods=["PATCH"])
+@login_required
+def update_thread(id):
+    try:
+        title = request.form["title"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
+
+    thread = Thread.get(id)
+
+    if thread.creator.id != current_user.id:
+        return jsonify({
+            "error": f"creator of the thread {id} is not you",
+            "success": False
+        }), 400
+
+    thread.title = title
+    thread.save()
+
+    return jsonify({
+        "updated": True,
+        "thread": thread.json(),
+    })
+
+
 @ app.route("/thread", methods=["POST"])
 @login_required
 def create_thread():
