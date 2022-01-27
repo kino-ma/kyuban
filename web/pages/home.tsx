@@ -9,14 +9,14 @@ import { ThreadCard } from "../components/threadCard";
 import cards from "../styles/card.module.css";
 
 type GetThreadsResponse = GetThreadsSuccessResponse;
-type GetResponsesResponse = GetResponsesSuccessResponse;
+type GetResponsesResponse = GetresponsesuccessResponse;
 
 type GetThreadsSuccessResponse = {
   threads: ThreadData[];
   success: true;
 };
 
-type GetResponsesSuccessResponse = {
+type GetresponsesuccessResponse = {
   responses: ResponseAndThreadData[];
   success: true;
 };

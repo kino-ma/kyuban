@@ -20,9 +20,9 @@ interface IUserProps {
   me: UserData;
 }
 
-type GetResponsesResponse = GetResponsesSuccessResponse;
+type GetResponsesResponse = GetresponsesuccessResponse;
 
-type GetResponsesSuccessResponse = {
+type GetresponsesuccessResponse = {
   responses: ResponseAndThreadData[];
   success: true;
 };
@@ -37,7 +37,7 @@ const User: NextPage<IUserProps> = ({ user, following, followed, me }) => {
       .then((resp) => {
         return resp.json();
       })
-      .then((json: GetResponsesSuccessResponse) => {
+      .then((json: GetresponsesuccessResponse) => {
         const { responses } = json;
         setResponses(responses);
       });
