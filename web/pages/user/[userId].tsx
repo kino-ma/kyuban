@@ -91,7 +91,7 @@ User.getInitialProps = async (ctx) => {
   const getUserRes = await get(`/users/${ctx.query.userId}`);
   const { user }: GetUserResponse = await getUserRes.json();
 
-  const getFollowRes = await get(`/follow/${ctx.query.userId}`);
+  const getFollowRes = await get(`/follows/${ctx.query.userId}`);
   const { following, followed }: GetFollowResponse = await getFollowRes.json();
 
   const me = useMe(ctx);

@@ -134,7 +134,7 @@ def get_thread_with_id(id):
     })
 
 
-@ app.route("/threads/<id>", methods=["PATCH"])
+@app.route("/threads/<id>", methods=["PATCH"])
 @login_required
 def update_thread(id):
     try:
@@ -162,7 +162,7 @@ def update_thread(id):
     })
 
 
-@ app.route("/threads", methods=["POST"])
+@app.route("/threads", methods=["POST"])
 @login_required
 def create_thread():
     try:
@@ -186,13 +186,13 @@ def create_thread():
     return jsonify({"thread": thread.json(), "success": True}), 201
 
 
-@app.route('/responses/<id>', methods=['GET'])
+@app.route('/response/<id>', methods=['GET'])
 def get_one_response(id):
     response = Response.get(id)
     return jsonify({"response": response.json(), "success": True})
 
 
-@app.route('/responses', methods=['GET'])
+@app.route('/response', methods=['GET'])
 def get_response():
     sender_id = request.args.get('sender')
 
@@ -204,7 +204,7 @@ def get_response():
     return jsonify({"responses": [t.json_with_thread() for t in reversed(responses)]})
 
 
-@app.route("/responses", methods=["POST"])
+@app.route("/response", methods=["POST"])
 @login_required
 def create_response():
     try:
@@ -224,7 +224,7 @@ def create_response():
     return jsonify({"response": response.json(), "success": True}), 201
 
 
-@app.route("/responses/<id>", methods=["PATCH"])
+@app.route("/response/<id>", methods=["PATCH"])
 @login_required
 def update_response(id):
     try:
@@ -252,7 +252,7 @@ def update_response(id):
     })
 
 
-@app.route("/responses/feed", methods=["GET"])
+@app.route("/response/feed", methods=["GET"])
 @login_required
 def thread_feed():
     followees = current_user.followees()
@@ -263,7 +263,7 @@ def thread_feed():
     })
 
 
-@ app.route("/follow/<target_id>", methods=["GET"])
+@app.route("/follows/<target_id>", methods=["GET"])
 @login_required
 def show_follow(target_id):
     me = current_user.id
@@ -274,7 +274,7 @@ def show_follow(target_id):
     return jsonify({"following": bool(following), "followed": bool(followed), "success": True})
 
 
-@ app.route("/follow/<target_id>", methods=["POST"])
+@app.route("/follows/<target_id>", methods=["POST"])
 @login_required
 def follow_someone(target_id):
     src = current_user.id
@@ -298,7 +298,7 @@ def follow_someone(target_id):
     return jsonify({"success": True}), 201
 
 
-@ app.route("/follow/<target_id>", methods=["DELETE"])
+@app.route("/follows/<target_id>", methods=["DELETE"])
 @login_required
 def unfollow_someone(target_id):
     src = current_user.id
