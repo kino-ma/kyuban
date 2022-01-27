@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255))
+    profile = relationship("UserProfile", back_populates="user", uselist=False)
     threads = relationship("Thread", back_populates="creator")
     responses = relationship("Response", back_populates="sender")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -101,6 +102,18 @@ class UserAuth(db.Model):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+
+class UserProfile(db.Model):
+    __tablename__ = 'user_profiles'
+    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    user = relationship("User", back_populates="profile")
+    bio = db.Column(db.String(1023), nullable=True)
+    avatar = db.Column(db.String(1025), nullable=True)
+
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updated_at = db.Column(db.DateTime, nullable=False,
+                           default=datetime.now, onupdate=datetime.now)
 
 
 class Thread(db.Model):
