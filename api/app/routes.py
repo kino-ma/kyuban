@@ -224,6 +224,34 @@ def create_response():
     return jsonify({"response": response.json(), "success": True}), 201
 
 
+@ app.route("/response/<id>", methods=["PATCH"])
+@login_required
+def update_response(id):
+    try:
+        content = request.form["content"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
+
+    response = Response.get(id)
+
+    if response.sender.id != current_user.id:
+        return jsonify({
+            "error": f"creator of the response {id} is not you",
+            "success": False
+        }), 400
+
+    response.content = content
+    response.save()
+
+    return jsonify({
+        "updated": True,
+        "response": response.json(),
+    })
+
+
 @app.route("/response/feed", methods=["GET"])
 @login_required
 def thread_feed():
