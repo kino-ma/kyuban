@@ -46,13 +46,13 @@ def signin():
     return jsonify({"success": True, "user": user.json()})
 
 
-@app.route('/user', methods=["GET"])
+@app.route('/users', methods=["GET"])
 def get_user():
     users = User.get_all()
     return jsonify({"users": [u.json() for u in users]})
 
 
-@app.route('/user/<id>', methods=['GET'])
+@app.route('/users/<id>', methods=['GET'])
 def get_user_with_id(id):
     user = User.get(id)
 
@@ -67,7 +67,7 @@ def get_user_with_id(id):
     })
 
 
-@app.route('/user', methods=["POST"])
+@app.route('/users', methods=["POST"])
 def create_user():
     try:
         name = request.form["name"]
@@ -97,7 +97,7 @@ def create_user():
     return jsonify({"user": user.json(), "success": True}), 201
 
 
-@ app.route("/user", methods=["PATCH"])
+@app.route("/users", methods=["PATCH"])
 @login_required
 def update_user():
     if not current_user.profile:
