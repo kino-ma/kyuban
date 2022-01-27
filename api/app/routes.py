@@ -7,17 +7,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 from app import app, db
-from app.models import TestModel, User, UserAuth, Thread, Response, Follow
+from app.models import User, UserAuth, Thread, Response, Follow, UserProfile
 
 
 @app.route('/')
 def hello():
     print('hello called')
-    model = TestModel(name=f"test{random.randint(0, 100)}")
-    db.session.add(model)
-    db.session.commit()
-    text = map(lambda m: m.name, TestModel.query.all())
-    return 'Hello, World!' + '\n' + ','.join(text)
+    return 'Hello, World!'
 
 
 @app.route('/signin', methods=["POST"])
@@ -101,6 +97,22 @@ def create_user():
     return jsonify({"user": user.json(), "success": True}), 201
 
 
+@ app.route("/user", methods=["PATCH"])
+@login_required
+def update_user():
+    if not current_user.profile:
+        current_user.profile = UserProfile(user_id=current_user.id)
+        current_user.profile.save()
+
+    name = request.form.get("name")
+    bio = request.form.get("bio")
+    avatar = request.form.get("avatar")
+
+    updated = current_user.update_profile(name, bio, avatar)
+
+    return jsonify({"updated": updated})
+
+
 @app.route('/thread', methods=['GET'])
 def get_thread():
     threads = Thread.get_all()
@@ -119,6 +131,34 @@ def get_thread_with_id(id):
 
     return jsonify({
         "thread": thread.json(), "success": True
+    })
+
+
+@ app.route("/thread/<id>", methods=["PATCH"])
+@login_required
+def update_thread(id):
+    try:
+        title = request.form["title"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
+
+    thread = Thread.get(id)
+
+    if thread.creator.id != current_user.id:
+        return jsonify({
+            "error": f"creator of the thread {id} is not you",
+            "success": False
+        }), 400
+
+    thread.title = title
+    thread.save()
+
+    return jsonify({
+        "updated": True,
+        "thread": thread.json(),
     })
 
 
@@ -182,6 +222,34 @@ def create_response():
     response.save()
 
     return jsonify({"response": response.json(), "success": True}), 201
+
+
+@ app.route("/response/<id>", methods=["PATCH"])
+@login_required
+def update_response(id):
+    try:
+        content = request.form["content"]
+    except BadRequestKeyError as e:
+        return jsonify({
+            "error": "missing field(s): %s" % ','.join(["'%s'" % a for a in e.args]),
+            "success": False
+        }), 400
+
+    response = Response.get(id)
+
+    if response.sender.id != current_user.id:
+        return jsonify({
+            "error": f"creator of the response {id} is not you",
+            "success": False
+        }), 400
+
+    response.content = content
+    response.save()
+
+    return jsonify({
+        "updated": True,
+        "response": response.json(),
+    })
 
 
 @app.route("/response/feed", methods=["GET"])

@@ -7,17 +7,6 @@ from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 
 
-class TestModel(db.Model):
-
-    __tablename__ = 'test_models'
-
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    updated_at = db.Column(db.DateTime, nullable=False,
-                           default=datetime.now, onupdate=datetime.now)
-
-
 class User(UserMixin, db.Model):
 
     __tablename__ = 'users'
@@ -25,6 +14,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255))
+    profile = relationship("UserProfile", back_populates="user", uselist=False)
     threads = relationship("Thread", back_populates="creator")
     responses = relationship("Response", back_populates="sender")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
@@ -67,6 +57,8 @@ class User(UserMixin, db.Model):
         data = {
             "id": self.id,
             "name": self.name,
+            "bio": self.profile.bio,
+            "avatar": self.profile.avatar,
             "createdAt": self.created_at.isoformat(),
             "updatedAt": self.updated_at.isoformat()
         }
@@ -78,6 +70,27 @@ class User(UserMixin, db.Model):
                                  for u in self.followees()]
 
         return data
+
+    def update_profile(self, name, bio, avatar):
+        if name:
+            self.name = name
+            db.session.add(self)
+
+        if bio:
+            self.profile.bio = bio
+            db.session.add(self.profile)
+
+        if avatar:
+            self.profile.bio = bio
+
+        if bio or avatar:
+            db.session.add(self.profile)
+
+        if avatar or bio or name:
+            db.session.commit()
+            return True
+        else:
+            return False
 
     @staticmethod
     def lookup(email=None, name=None):
@@ -108,6 +121,22 @@ class UserAuth(db.Model):
     @staticmethod
     def get_by_user(user: User):
         return UserAuth.query.get(user.id)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+
+class UserProfile(db.Model):
+    __tablename__ = 'user_profiles'
+    user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
+    user = relationship("User", back_populates="profile")
+    bio = db.Column(db.String(1023), nullable=True)
+    avatar = db.Column(db.String(1025), nullable=True)
+
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updated_at = db.Column(db.DateTime, nullable=False,
+                           default=datetime.now, onupdate=datetime.now)
 
     def save(self):
         db.session.add(self)
