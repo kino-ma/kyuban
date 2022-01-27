@@ -7,17 +7,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 from app import app, db
-from app.models import TestModel, User, UserAuth, Thread, Response, Follow
+from app.models import User, UserAuth, Thread, Response, Follow
 
 
 @app.route('/')
 def hello():
     print('hello called')
-    model = TestModel(name=f"test{random.randint(0, 100)}")
-    db.session.add(model)
-    db.session.commit()
-    text = map(lambda m: m.name, TestModel.query.all())
-    return 'Hello, World!' + '\n' + ','.join(text)
+    return 'Hello, World!'
 
 
 @app.route('/signin', methods=["POST"])
