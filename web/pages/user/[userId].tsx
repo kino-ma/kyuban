@@ -20,9 +20,9 @@ interface IUserProps {
   me: UserData;
 }
 
-type GetResponsesResponse = GetResponsesSuccessResponse;
+type GetResponsesResponse = GetresponsesuccessResponse;
 
-type GetResponsesSuccessResponse = {
+type GetresponsesuccessResponse = {
   responses: ResponseAndThreadData[];
   success: true;
 };
@@ -33,11 +33,11 @@ const User: NextPage<IUserProps> = ({ user, following, followed, me }) => {
   const [responses, setResponses] = useState<ResponseAndThreadData[]>([]);
 
   useEffect(() => {
-    get(`/response?sender=${user.id}`)
+    get(`/responses?sender=${user.id}`)
       .then((resp) => {
         return resp.json();
       })
-      .then((json: GetResponsesSuccessResponse) => {
+      .then((json: GetresponsesuccessResponse) => {
         const { responses } = json;
         setResponses(responses);
       });
@@ -88,10 +88,10 @@ interface ErrorResponse {
 }
 
 User.getInitialProps = async (ctx) => {
-  const getUserRes = await get(`/user/${ctx.query.userId}`);
+  const getUserRes = await get(`/users/${ctx.query.userId}`);
   const { user }: GetUserResponse = await getUserRes.json();
 
-  const getFollowRes = await get(`/follow/${ctx.query.userId}`);
+  const getFollowRes = await get(`/follows/${ctx.query.userId}`);
   const { following, followed }: GetFollowResponse = await getFollowRes.json();
 
   const me = useMe(ctx);

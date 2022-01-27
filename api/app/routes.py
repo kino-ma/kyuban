@@ -46,13 +46,13 @@ def signin():
     return jsonify({"success": True, "user": user.json()})
 
 
-@app.route('/user', methods=["GET"])
+@app.route('/users', methods=["GET"])
 def get_user():
     users = User.get_all()
     return jsonify({"users": [u.json() for u in users]})
 
 
-@app.route('/user/<id>', methods=['GET'])
+@app.route('/users/<id>', methods=['GET'])
 def get_user_with_id(id):
     user = User.get(id)
 
@@ -67,7 +67,7 @@ def get_user_with_id(id):
     })
 
 
-@app.route('/user', methods=["POST"])
+@app.route('/users', methods=["POST"])
 def create_user():
     try:
         name = request.form["name"]
@@ -97,7 +97,7 @@ def create_user():
     return jsonify({"user": user.json(), "success": True}), 201
 
 
-@ app.route("/user", methods=["PATCH"])
+@app.route("/users", methods=["PATCH"])
 @login_required
 def update_user():
     if not current_user.profile:
@@ -113,13 +113,13 @@ def update_user():
     return jsonify({"updated": updated})
 
 
-@app.route('/thread', methods=['GET'])
+@app.route('/threads', methods=['GET'])
 def get_thread():
     threads = Thread.get_all()
     return jsonify({"threads": [t.json() for t in reversed(threads)]})
 
 
-@app.route('/thread/<id>', methods=['GET'])
+@app.route('/threads/<id>', methods=['GET'])
 def get_thread_with_id(id):
     thread = Thread.get(id)
 
@@ -134,7 +134,7 @@ def get_thread_with_id(id):
     })
 
 
-@ app.route("/thread/<id>", methods=["PATCH"])
+@app.route("/threads/<id>", methods=["PATCH"])
 @login_required
 def update_thread(id):
     try:
@@ -162,7 +162,7 @@ def update_thread(id):
     })
 
 
-@ app.route("/thread", methods=["POST"])
+@app.route("/threads", methods=["POST"])
 @login_required
 def create_thread():
     try:
@@ -186,13 +186,13 @@ def create_thread():
     return jsonify({"thread": thread.json(), "success": True}), 201
 
 
-@ app.route('/response/<id>', methods=['GET'])
+@app.route('/responses/<id>', methods=['GET'])
 def get_one_response(id):
     response = Response.get(id)
     return jsonify({"response": response.json(), "success": True})
 
 
-@ app.route('/response', methods=['GET'])
+@app.route('/responses', methods=['GET'])
 def get_response():
     sender_id = request.args.get('sender')
 
@@ -204,7 +204,7 @@ def get_response():
     return jsonify({"responses": [t.json_with_thread() for t in reversed(responses)]})
 
 
-@ app.route("/response", methods=["POST"])
+@app.route("/responses", methods=["POST"])
 @login_required
 def create_response():
     try:
@@ -224,7 +224,7 @@ def create_response():
     return jsonify({"response": response.json(), "success": True}), 201
 
 
-@ app.route("/response/<id>", methods=["PATCH"])
+@app.route("/responses/<id>", methods=["PATCH"])
 @login_required
 def update_response(id):
     try:
@@ -252,7 +252,7 @@ def update_response(id):
     })
 
 
-@app.route("/response/feed", methods=["GET"])
+@app.route("/responses/feed", methods=["GET"])
 @login_required
 def thread_feed():
     followees = current_user.followees()
@@ -263,7 +263,7 @@ def thread_feed():
     })
 
 
-@ app.route("/follow/<target_id>", methods=["GET"])
+@app.route("/follows/<target_id>", methods=["GET"])
 @login_required
 def show_follow(target_id):
     me = current_user.id
@@ -274,7 +274,7 @@ def show_follow(target_id):
     return jsonify({"following": bool(following), "followed": bool(followed), "success": True})
 
 
-@ app.route("/follow/<target_id>", methods=["POST"])
+@app.route("/follows/<target_id>", methods=["POST"])
 @login_required
 def follow_someone(target_id):
     src = current_user.id
@@ -298,7 +298,7 @@ def follow_someone(target_id):
     return jsonify({"success": True}), 201
 
 
-@ app.route("/follow/<target_id>", methods=["DELETE"])
+@app.route("/follows/<target_id>", methods=["DELETE"])
 @login_required
 def unfollow_someone(target_id):
     src = current_user.id

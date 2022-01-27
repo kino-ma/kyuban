@@ -23,7 +23,7 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
   const [followState, setFollowState] = useState(following);
 
   const handleFollow: FollowButtonEventHandler = async (_evt) => {
-    const uri = `/follow/${user.id}`;
+    const uri = `/follows/${user.id}`;
     const resp = await post(uri);
     const { success } = await resp.json();
 
@@ -38,7 +38,7 @@ export const UserProfile: React.FC<IUserProfileProps> = ({
       return;
     }
 
-    const uri = `/follow/${user.id}`;
+    const uri = `/follows/${user.id}`;
     const resp = await delete_(uri);
     const { success } = await resp.json();
 

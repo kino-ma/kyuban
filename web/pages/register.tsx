@@ -31,7 +31,7 @@ const Register = () => {
   const handleSubmit = async (evt) => {
     try {
       evt.preventDefault();
-      const resp = await post("/user", formInput);
+      const resp = await post("/users", formInput);
 
       if (!resp.ok) {
         const json = await resp.json();

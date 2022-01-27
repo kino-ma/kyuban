@@ -9,14 +9,14 @@ import { ThreadCard } from "../components/threadCard";
 import cards from "../styles/card.module.css";
 
 type GetThreadsResponse = GetThreadsSuccessResponse;
-type GetResponsesResponse = GetResponsesSuccessResponse;
+type GetResponsesResponse = GetresponsesuccessResponse;
 
 type GetThreadsSuccessResponse = {
   threads: ThreadData[];
   success: true;
 };
 
-type GetResponsesSuccessResponse = {
+type GetresponsesuccessResponse = {
   responses: ResponseAndThreadData[];
   success: true;
 };
@@ -31,7 +31,7 @@ const Home: NextPage = () => {
   const [responses, setResponses] = useState<ResponseAndThreadData[]>([]);
 
   useEffect(() => {
-    get(`/thread`)
+    get(`/threads`)
       .then((resp) => {
         return resp.json();
       })
@@ -42,7 +42,7 @@ const Home: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    get(`/response/feed`)
+    get(`/responses/feed`)
       .then((resp) => {
         return resp.json();
       })
@@ -91,7 +91,7 @@ Home.getInitialProps = async (ctx) => {
     const session = getSession(ctx);
 
     // If not logged in, fails with TypeError
-    const responsesResp = await get("/response/feed", { session });
+    const responsesResp = await get("/responses/feed", { session });
     const json: ResponseFeedResponse = await responsesResp.json();
     responses = json.responses;
   } catch (err) {
@@ -112,7 +112,7 @@ Home.getInitialProps = async (ctx) => {
     throw new Error("エラーが発生しました");
   }
 
-  const threadsResp = await get("/thread");
+  const threadsResp = await get("/threads");
   const { threads } = await threadsResp.json();
 
   return {
