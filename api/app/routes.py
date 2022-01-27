@@ -113,13 +113,13 @@ def update_user():
     return jsonify({"updated": updated})
 
 
-@app.route('/thread', methods=['GET'])
+@app.route('/threads', methods=['GET'])
 def get_thread():
     threads = Thread.get_all()
     return jsonify({"threads": [t.json() for t in reversed(threads)]})
 
 
-@app.route('/thread/<id>', methods=['GET'])
+@app.route('/threads/<id>', methods=['GET'])
 def get_thread_with_id(id):
     thread = Thread.get(id)
 
@@ -134,7 +134,7 @@ def get_thread_with_id(id):
     })
 
 
-@ app.route("/thread/<id>", methods=["PATCH"])
+@ app.route("/threads/<id>", methods=["PATCH"])
 @login_required
 def update_thread(id):
     try:
@@ -162,7 +162,7 @@ def update_thread(id):
     })
 
 
-@ app.route("/thread", methods=["POST"])
+@ app.route("/threads", methods=["POST"])
 @login_required
 def create_thread():
     try:

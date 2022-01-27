@@ -27,7 +27,7 @@ const CreateThread: React.FC = () => {
     try {
       evt.preventDefault();
 
-      const resp = await post("/thread", { title, content });
+      const resp = await post("/threads", { title, content });
       const { thread }: CreateThreadResponse = await resp.json();
 
       router.push(`/thread/${thread.id}`);

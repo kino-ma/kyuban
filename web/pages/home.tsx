@@ -31,7 +31,7 @@ const Home: NextPage = () => {
   const [responses, setResponses] = useState<ResponseAndThreadData[]>([]);
 
   useEffect(() => {
-    get(`/thread`)
+    get(`/threads`)
       .then((resp) => {
         return resp.json();
       })
@@ -112,7 +112,7 @@ Home.getInitialProps = async (ctx) => {
     throw new Error("エラーが発生しました");
   }
 
-  const threadsResp = await get("/thread");
+  const threadsResp = await get("/threads");
   const { threads } = await threadsResp.json();
 
   return {
