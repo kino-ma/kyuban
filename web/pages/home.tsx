@@ -42,7 +42,7 @@ const Home: NextPage = () => {
   }, []);
 
   useEffect(() => {
-    get(`/response/feed`)
+    get(`/responses/feed`)
       .then((resp) => {
         return resp.json();
       })
@@ -91,7 +91,7 @@ Home.getInitialProps = async (ctx) => {
     const session = getSession(ctx);
 
     // If not logged in, fails with TypeError
-    const responsesResp = await get("/response/feed", { session });
+    const responsesResp = await get("/responses/feed", { session });
     const json: ResponseFeedResponse = await responsesResp.json();
     responses = json.responses;
   } catch (err) {

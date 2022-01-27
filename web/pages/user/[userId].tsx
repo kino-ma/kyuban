@@ -33,7 +33,7 @@ const User: NextPage<IUserProps> = ({ user, following, followed, me }) => {
   const [responses, setResponses] = useState<ResponseAndThreadData[]>([]);
 
   useEffect(() => {
-    get(`/response?sender=${user.id}`)
+    get(`/responses?sender=${user.id}`)
       .then((resp) => {
         return resp.json();
       })

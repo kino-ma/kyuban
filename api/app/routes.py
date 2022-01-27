@@ -186,13 +186,13 @@ def create_thread():
     return jsonify({"thread": thread.json(), "success": True}), 201
 
 
-@ app.route('/response/<id>', methods=['GET'])
+@app.route('/responses/<id>', methods=['GET'])
 def get_one_response(id):
     response = Response.get(id)
     return jsonify({"response": response.json(), "success": True})
 
 
-@ app.route('/response', methods=['GET'])
+@app.route('/responses', methods=['GET'])
 def get_response():
     sender_id = request.args.get('sender')
 
@@ -204,7 +204,7 @@ def get_response():
     return jsonify({"responses": [t.json_with_thread() for t in reversed(responses)]})
 
 
-@ app.route("/response", methods=["POST"])
+@app.route("/responses", methods=["POST"])
 @login_required
 def create_response():
     try:
@@ -224,7 +224,7 @@ def create_response():
     return jsonify({"response": response.json(), "success": True}), 201
 
 
-@ app.route("/response/<id>", methods=["PATCH"])
+@app.route("/responses/<id>", methods=["PATCH"])
 @login_required
 def update_response(id):
     try:
@@ -252,7 +252,7 @@ def update_response(id):
     })
 
 
-@app.route("/response/feed", methods=["GET"])
+@app.route("/responses/feed", methods=["GET"])
 @login_required
 def thread_feed():
     followees = current_user.followees()
