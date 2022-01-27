@@ -57,6 +57,8 @@ class User(UserMixin, db.Model):
         data = {
             "id": self.id,
             "name": self.name,
+            "bio": self.profile.bio,
+            "avatar": self.profile.avatar,
             "createdAt": self.created_at.isoformat(),
             "updatedAt": self.updated_at.isoformat()
         }
