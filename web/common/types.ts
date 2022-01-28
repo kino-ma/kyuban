@@ -7,6 +7,11 @@ export type UserData = {
   updatedAt: string;
 };
 
+export type FollowData = {
+  following: boolean;
+  followed: boolean;
+};
+
 export type ThreadData = {
   id: number;
   title: string;

@@ -1,63 +1,28 @@
 import React, { MouseEventHandler, useState } from "react";
 import { delete_, post } from "../common/api";
-import { UserData } from "../common/types";
+import { FollowData, UserData } from "../common/types";
 import { Button } from "./button";
-import { FollowButton, FollowButtonEventHandler } from "./followButton";
 import { Icon } from "./icon";
 import { UserName } from "./userName";
 import styles from "../styles/card.module.css";
+import { ManagedFollowButton } from "./managedFollowButton";
 
 interface IUserProfileProps {
   user: UserData;
-  following: boolean;
-  followed: boolean;
   isMe: boolean;
 }
 
-export const UserProfile: React.FC<IUserProfileProps> = ({
-  user,
-  following,
-  followed,
-  isMe,
-}) => {
-  const [followState, setFollowState] = useState(following);
+export const UserProfile: React.FC<IUserProfileProps> = ({ user, isMe }) => {
+  const [followed, setFollowed] = useState(false);
 
-  const handleFollow: FollowButtonEventHandler = async (_evt) => {
-    const uri = `/follows/${user.id}`;
-    const resp = await post(uri);
-    const { success } = await resp.json();
-
-    if (success) {
-      setFollowState(true);
-    }
-  };
-
-  const handleFollowing: FollowButtonEventHandler = async (_evt) => {
-    const sure = confirm(`${user.name} さんのフォローを外しますか？`);
-    if (!sure) {
-      return;
-    }
-
-    const uri = `/follows/${user.id}`;
-    const resp = await delete_(uri);
-    const { success } = await resp.json();
-
-    if (success) {
-      setFollowState(false);
-    }
-  };
-
-  const followedText = followed ? <p>あなたをフォローしています</p> : null;
+  const onFollowStateChange = (follow: FollowData) =>
+    setFollowed(follow.followed);
 
   const followButton = !isMe ? (
-    <div>
-      <FollowButton
-        following={followState}
-        onClickFollowing={handleFollowing}
-        onClickNotFollowing={handleFollow}
-      />
-    </div>
+    <ManagedFollowButton {...{ user, onFollowStateChange }} />
   ) : null;
+
+  const followedText = followed ? <p>あなたをフォローしています</p> : null;
 
   return (
     <React.Fragment>

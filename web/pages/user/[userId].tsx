@@ -3,20 +3,14 @@ import { useState, useEffect } from "react";
 
 import { get } from "../../common/api";
 import { useMe } from "../../common/auth";
-import {
-  ResponseAndThreadData,
-  ResponseData,
-  UserData,
-} from "../../common/types";
-import { ResponseCard } from "../../components/responseCard";
+import { ResponseAndThreadData, UserData } from "../../common/types";
+import { ResponseCard } from "../../components/ResponseCard";
 import { UserProfile } from "../../components/userProfile";
 import styles from "../../styles/profile.module.css";
 import responseStyles from "../../styles/card.module.css";
 
 interface IUserProps {
   user: UserData;
-  following: boolean;
-  followed: boolean;
   me: UserData;
 }
 
@@ -28,9 +22,11 @@ type GetresponsesuccessResponse = {
 };
 
 // TODO: respnoses become empty sometimes
-const User: NextPage<IUserProps> = ({ user, following, followed, me }) => {
+const User: NextPage<IUserProps> = ({ user, me }) => {
   const isMe = me.id === user.id;
-  const [responses, setResponses] = useState<ResponseAndThreadData[]>([]);
+  const [responses, setResponses] = useState<ResponseAndThreadData[] | null>(
+    []
+  );
 
   useEffect(() => {
     get(`/responses?sender=${user.id}`)
@@ -44,17 +40,19 @@ const User: NextPage<IUserProps> = ({ user, following, followed, me }) => {
   }, [user]);
 
   const responseItems =
-    responses.length > 0 ? (
+    responses === null ? (
+      <p>読み込み中...</p>
+    ) : responses.length > 0 ? (
       responses.map((r) => <ResponseCard response={r} />)
     ) : (
-      <p>読み込み中...</p>
+      <p>{user.name} さんはまだ投稿をしていません</p>
     );
 
   return (
     <main>
       <div className={styles.container}>
         <div className={styles.column}>
-          <UserProfile {...{ user, following, followed, isMe }} />
+          <UserProfile {...{ user, isMe }} />
         </div>
         <div className={styles.column}>
           <h3 className={styles.field__heading}>
@@ -91,12 +89,9 @@ User.getInitialProps = async (ctx) => {
   const getUserRes = await get(`/users/${ctx.query.userId}`);
   const { user }: GetUserResponse = await getUserRes.json();
 
-  const getFollowRes = await get(`/follows/${ctx.query.userId}`);
-  const { following, followed }: GetFollowResponse = await getFollowRes.json();
-
   const me = useMe(ctx);
 
-  return { user, following, followed, me };
+  return { user, me };
 };
 
 export default User;
