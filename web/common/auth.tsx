@@ -31,12 +31,6 @@ export const useMe = (ctx?: NextPageContext): UserData | null => {
 export const getSession = (ctx?: NextPageContext): string | null => {
   const cookies = nookies.get(ctx);
   const { session } = cookies;
-  console.log({ cookies, session: cookies.session });
-
-  if (typeof session === "undefined") {
-    console.log("undefined error", { cookies, session: cookies.session });
-    throw TypeError("no session");
-  }
 
   return session;
 };
