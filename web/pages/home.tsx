@@ -40,16 +40,17 @@ const Home: NextPage<HomeProps> = ({ threads }) => {
 
   useEffect(() => {
     const fetchFeed = async () => {
-      const resp = await get(`/responses/feed`).catch(function (err) {
-        if (err.status === 401) {
+      try {
+        const resp = await get(`/responses/feed`);
+        const json = await resp.json();
+        const { responses } = json;
+        setResponses(responses);
+      } catch (err) {
+        if (err?.status === 401) {
           console.error("unauthorized");
-          return router.push("/") as never;
+          router.push("/");
         }
-      });
-
-      const json = await resp.json();
-      const { responses } = json;
-      setResponses(responses);
+      }
     };
 
     fetchFeed();
