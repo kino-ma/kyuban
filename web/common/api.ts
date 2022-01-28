@@ -48,7 +48,16 @@ const call = (
     credentials: "include",
   });
 
-  return resp;
+  return resp.then(
+    (response) =>
+      new Promise((resolve, reject) => {
+        if (response.ok) {
+          resolve(response);
+        } else {
+          reject(response);
+        }
+      })
+  );
 };
 
 export const post = (

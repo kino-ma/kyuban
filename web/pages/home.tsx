@@ -2,9 +2,12 @@ import { NextPage } from "next";
 import { Router, useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { get } from "../common/api";
-import { getSession } from "../common/auth";
-import { ResponseAndThreadData, ThreadData } from "../common/types";
-import { ResponseCard } from "../components/responseCard";
+import {
+  ResponseAndThreadData,
+  ResponseData,
+  ThreadData,
+} from "../common/types";
+import { ResponseCard } from "../components/ResponseCard";
 import { ThreadCard } from "../components/threadCard";
 import cards from "../styles/card.module.css";
 
@@ -26,30 +29,31 @@ interface ErrorResponse {
   error: false | undefined;
 }
 
-const Home: NextPage = () => {
-  const [threads, setThreads] = useState<ThreadData[]>([]);
+interface HomeProps {
+  threads: ThreadData[];
+}
+
+const Home: NextPage<HomeProps> = ({ threads }) => {
+  const router = useRouter();
+
   const [responses, setResponses] = useState<ResponseAndThreadData[]>([]);
 
   useEffect(() => {
-    get(`/threads`)
-      .then((resp) => {
-        return resp.json();
-      })
-      .then((json: GetThreadsResponse) => {
-        const { threads } = json;
-        setThreads(threads);
-      });
-  }, []);
-
-  useEffect(() => {
-    get(`/responses/feed`)
-      .then((resp) => {
-        return resp.json();
-      })
-      .then((json: GetResponsesResponse) => {
+    const fetchFeed = async () => {
+      try {
+        const resp = await get(`/responses/feed`);
+        const json = await resp.json();
         const { responses } = json;
         setResponses(responses);
-      });
+      } catch (err) {
+        if (err?.status === 401) {
+          console.error("unauthorized");
+          router.push("/");
+        }
+      }
+    };
+
+    fetchFeed();
   }, []);
 
   const responseItems =
@@ -79,44 +83,11 @@ const Home: NextPage = () => {
   );
 };
 
-type ResponseFeedResponse = {
-  responses: ResponseAndThreadData[];
-  success: true;
-};
-
 Home.getInitialProps = async (ctx) => {
-  let responses: ResponseAndThreadData[];
-
-  try {
-    const session = getSession(ctx);
-
-    // If not logged in, fails with TypeError
-    const responsesResp = await get("/responses/feed", { session });
-    const json: ResponseFeedResponse = await responsesResp.json();
-    responses = json.responses;
-  } catch (err) {
-    // Generar errors
-    if (!(err instanceof TypeError)) {
-      throw err;
-    }
-
-    // If not authorized, redirect
-    if (typeof ctx.res !== "undefined") {
-      ctx.res.setHeader("Location", "/");
-      ctx.res.statusCode = 307; // Temporary redirect
-      ctx.res.end();
-      return {};
-    }
-
-    // Unknown errors
-    throw new Error("エラーが発生しました");
-  }
-
   const threadsResp = await get("/threads");
-  const { threads } = await threadsResp.json();
+  const { threads }: GetThreadsResponse = await threadsResp.json();
 
   return {
-    responses,
     threads,
   };
 };
