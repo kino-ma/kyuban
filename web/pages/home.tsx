@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { get } from "../common/api";
 import { getSession } from "../common/auth";
 import { ResponseAndThreadData, ThreadData } from "../common/types";
-import { ResponseCard } from "../components/responseCard";
+import { ResponseCard } from "../components/ResponseCard";
 import { ThreadCard } from "../components/threadCard";
 import cards from "../styles/card.module.css";
 
@@ -27,6 +27,8 @@ interface ErrorResponse {
 }
 
 const Home: NextPage = () => {
+  const router = useRouter();
+
   const [threads, setThreads] = useState<ThreadData[]>([]);
   const [responses, setResponses] = useState<ResponseAndThreadData[]>([]);
 
@@ -38,6 +40,11 @@ const Home: NextPage = () => {
       .then((json: GetThreadsResponse) => {
         const { threads } = json;
         setThreads(threads);
+      })
+      .catch((err) => {
+        if (err.status === 401) {
+          router.push("/");
+        }
       });
   }, []);
 
@@ -49,6 +56,12 @@ const Home: NextPage = () => {
       .then((json: GetResponsesResponse) => {
         const { responses } = json;
         setResponses(responses);
+      })
+      .catch((err) => {
+        console.error("caught");
+        if (err.status === 401) {
+          router.push("/");
+        }
       });
   }, []);
 
@@ -85,40 +98,30 @@ type ResponseFeedResponse = {
 };
 
 Home.getInitialProps = async (ctx) => {
-  let responses: ResponseAndThreadData[];
-
   try {
-    const session = getSession(ctx);
-
-    // If not logged in, fails with TypeError
-    const responsesResp = await get("/responses/feed", { session });
+    const responsesResp = await get("/responses/feed");
     const json: ResponseFeedResponse = await responsesResp.json();
-    responses = json.responses;
-  } catch (err) {
-    // Generar errors
-    if (!(err instanceof TypeError)) {
-      throw err;
-    }
+    const responses: ResponseAndThreadData[] = json.responses;
 
-    // If not authorized, redirect
-    if (typeof ctx.res !== "undefined") {
+    const threadsResp = await get("/threads");
+    const { threads } = await threadsResp.json();
+
+    return {
+      responses,
+      threads,
+    };
+  } catch (e) {
+    TODO: fails when serverside: 401
+    console.error({ feedError: e });
+    console.error({ headers: e.headers });
+    if (e?.status === 401) {
+      console.log("unauthorized. redirecting...");
       ctx.res.setHeader("Location", "/");
       ctx.res.statusCode = 307; // Temporary redirect
       ctx.res.end();
       return {};
     }
-
-    // Unknown errors
-    throw new Error("エラーが発生しました");
   }
-
-  const threadsResp = await get("/threads");
-  const { threads } = await threadsResp.json();
-
-  return {
-    responses,
-    threads,
-  };
 };
 
 export default Home;
