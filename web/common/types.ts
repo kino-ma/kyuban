@@ -1,6 +1,8 @@
 export type UserData = {
   id: number;
   name: string;
+  bio: string;
+  avatar: string;
   createdAt: string;
   updatedAt: string;
 };
