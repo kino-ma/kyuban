@@ -14,7 +14,10 @@ const Followers: NextPage<IFollowersProps> = ({ user }) => {
     user.followers.length > 0 ? (
       <PeopleList people={user.followers} />
     ) : (
-      `${user.name} さんの最初のフォロワーになりませんか？`
+      <div>
+        <ManagedFollowButton user={user} />
+        {`${user.name} さんの最初のフォロワーになりませんか？`}
+      </div>
     );
   return <main>{followerItems}</main>;
 };
