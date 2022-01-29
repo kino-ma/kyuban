@@ -1,7 +1,10 @@
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
+
 import { post } from "../common/api";
 import { ResponseData } from "../common/types";
+import button from "../styles/button.module.css";
+import threads from "../styles/thread.module.css";
 
 // FIXME: error validation
 type PostResponseResponse = SuccessResponse;
@@ -30,7 +33,7 @@ export const ResponseForm: React.FC<IResponseFormProps> = ({
   const router = useRouter();
   const [content, setContent] = useState("");
 
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (evt) => {
+  const handleSubmit: React.MouseEventHandler = async (evt) => {
     try {
       evt.preventDefault();
 
@@ -45,6 +48,7 @@ export const ResponseForm: React.FC<IResponseFormProps> = ({
       });
       const { response }: PostResponseResponse = await resp.json();
 
+      setContent("");
       if (postHook) {
         postHook(response);
       }
@@ -55,19 +59,21 @@ export const ResponseForm: React.FC<IResponseFormProps> = ({
 
   return (
     <React.Fragment>
-      <h3>レスポンスを投稿する</h3>
-      <form onSubmit={handleSubmit}>
-        <label>
-          投稿内容:
-          <br />
-          <textarea
-            name="content"
-            onChange={(e) => setContent(e.target.value)}
-          />
-        </label>
-        <br />
-        <input type="submit" value="Submit" />
-      </form>
+      <div className={threads.thread__input__container}>
+        <textarea
+          className={threads.thread__input__area}
+          rows={6}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+        <button
+          className={button.button}
+          onClick={handleSubmit}
+          style={{ marginTop: 0 }}
+        >
+          送信
+        </button>
+      </div>
     </React.Fragment>
   );
 };
