@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import { get } from "../../../common/api";
 import { UserAndFriendsData } from "../../../common/types";
-import { ManagedFollowButton } from "../../../components/managedFollowButton";
 import { PeopleList } from "../../../components/peopleList";
 import { UserName } from "../../../components/userName";
 
@@ -10,13 +9,13 @@ interface IFollowersProps {
 }
 
 const Followers: NextPage<IFollowersProps> = ({ user }) => {
-  const followerItems =
-    user.followers.length > 0 ? (
-      <PeopleList people={user.followers} />
+  const followeeItems =
+    user.followees.length > 0 ? (
+      <PeopleList people={user.followees} />
     ) : (
-      `${user.name} さんの最初のフォロワーになりませんか？`
+      `$${user.name} さんはまだ誰もフォローしていません`
     );
-  return <main>{followerItems}</main>;
+  return <main>{followeeItems}</main>;
 };
 
 type GetUserResponse = GetUserSuccessResponse;
