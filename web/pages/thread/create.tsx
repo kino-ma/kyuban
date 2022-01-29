@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import React, { useState } from "react";
 import { post } from "../../common/api";

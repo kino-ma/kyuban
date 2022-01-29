@@ -1,21 +1,30 @@
 import { NextPage } from "next";
-import { Router, useRouter } from "next/dist/client/router";
+import { Router, useRouter } from "next/router";
 import Head from "next/head";
 import React, { useState } from "react";
 
 import { get } from "../../common/api";
-import { ResponseData, ThreadData } from "../../common/types";
+import {
+  ResponseAndThreadData,
+  ResponseData,
+  ThreadData,
+} from "../../common/types";
 import { Response } from "../../components/response";
 import { ResponseForm } from "../../components/responseForm";
 import styles from "../../styles/Home.module.css";
 import threads from "../../styles/thread.module.css";
-import button from "../../styles/button.module.css";
 import { ResponseItem } from "../../components/ResponseItem";
 
 // FIXME: error validation
-type GetThreadResponse = SuccessResponse;
+type GetThreadResponse = GetThreadSuccessResponse;
+type PostResponseResponse = PostResponseSuccessResponse;
 
-type SuccessResponse = {
+type PostResponseSuccessResponse = {
+  response: ResponseAndThreadData;
+  success: true;
+};
+
+type GetThreadSuccessResponse = {
   thread: ThreadData;
   success: true;
 };
@@ -58,12 +67,10 @@ const Thread: NextPage<ThreadProps> = ({ thread }) => {
         </div>
         <div className={threads.thread__container__right}>
           <h3 style={{ margin: 0 }}>レスポンスする</h3>
-          <div className={threads.thread__input__container}>
-            <textarea className={threads.thread__input__area} rows={6} />
-            <button className={button.button} style={{ marginTop: 0 }}>
-              送信
-            </button>
-          </div>
+          <ResponseForm
+            threadId={thread.id}
+            postRequestHook={postRequestHook}
+          />
         </div>
         <div className={threads.main}></div>
       </main>

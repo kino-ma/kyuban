@@ -6,7 +6,7 @@ import card from "../styles/card.module.css";
 import form from "../styles/form.module.css";
 import button from "../styles/button.module.css";
 import { UserData } from "../common/types";
-import { useRouter } from "next/dist/client/router";
+import { useRouter } from "next/router";
 import { post } from "../common/api";
 import { saveCurrentUser } from "../common/auth";
 
