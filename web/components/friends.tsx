@@ -1,12 +1,21 @@
 import { UserAndFriendsData, UserData } from "../common/types";
 import styles from "../styles/friends.module.scss";
 
+type PeopleType = "followers" | "followees";
+
 interface IPeopleNumberProps {
   users: UserData[];
-  text: string;
+  typ: PeopleType;
 }
 
-const PeopleNumber = ({ users, text }: IPeopleNumberProps) => {
+const PeopleNumber = ({ users, typ }: IPeopleNumberProps) => {
+  const peopleTypeText = {
+    followers: "フォロワー",
+    followees: "フォロー中",
+  };
+
+  const text = peopleTypeText[typ];
+
   return (
     <span className={styles["people-number"]}>
       {users.length} {text}
@@ -19,11 +28,11 @@ interface IFriendsProps {
 }
 
 export const Friends = ({ user }: IFriendsProps) => {
-  const followees = PeopleNumber({ users: user.followees, text: "フォロー中" });
-  const followers = PeopleNumber({ users: user.followers, text: "フォロワー" });
+  const followees = PeopleNumber({ users: user.followees, typ: "followees" });
+  const followers = PeopleNumber({ users: user.followers, typ: "followers" });
 
   return (
-    <div>
+    <div classname={styles["friends-container"]}>
       {followees}
       {followers}
     </div>
