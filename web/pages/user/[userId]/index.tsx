@@ -3,14 +3,18 @@ import { useState, useEffect } from "react";
 
 import { get } from "../../../common/api";
 import { useMe } from "../../../common/auth";
-import { ResponseAndThreadData, UserData } from "../../../common/types";
+import {
+  ResponseAndThreadData,
+  UserAndFriendsData,
+  UserData,
+} from "../../../common/types";
 import { ResponseCard } from "../../../components/ResponseCard";
 import { UserProfile } from "../../../components/userProfile";
 import styles from "../../../styles/profile.module.css";
 import responseStyles from "../../styles/card.module.css";
 
 interface IUserProps {
-  user: UserData;
+  user: UserAndFriendsData;
   me: UserData;
 }
 
@@ -70,7 +74,7 @@ type GetUserResponse = GetUserSuccessResponse;
 type GetFollowResponse = GetFollowSuccessResponse;
 
 type GetUserSuccessResponse = {
-  user: UserData;
+  user: UserAndFriendsData;
   success: true;
 };
 
