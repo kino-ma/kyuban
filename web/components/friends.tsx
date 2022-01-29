@@ -1,25 +1,35 @@
+import Link from "next/link";
 import { UserAndFriendsData, UserData } from "../common/types";
 import styles from "../styles/friends.module.scss";
 
 type PeopleType = "followers" | "followees";
 
 interface IPeopleNumberProps {
+  user: UserAndFriendsData;
   users: UserData[];
   typ: PeopleType;
 }
 
-const PeopleNumber = ({ users, typ }: IPeopleNumberProps) => {
-  const peopleTypeText = {
-    followers: "フォロワー",
-    followees: "フォロー中",
+const PeopleNumber = ({ user, users, typ }: IPeopleNumberProps) => {
+  const peopleTypeInfo = {
+    followers: {
+      text: "フォロワー",
+      uri: `/user/${user.id}/followers`,
+    },
+    followees: {
+      text: "フォロー中",
+      uri: `/user/${user.id}/followees`,
+    },
   };
 
-  const text = peopleTypeText[typ];
+  const { text, uri } = peopleTypeInfo[typ];
 
   return (
-    <span className={styles["people-number"]}>
-      {users.length} {text}
-    </span>
+    <Link href={uri}>
+      <a className={styles["people-number"]}>
+        {users.length} {text}
+      </a>
+    </Link>
   );
 };
 
@@ -28,11 +38,19 @@ interface IFriendsProps {
 }
 
 export const Friends = ({ user }: IFriendsProps) => {
-  const followees = PeopleNumber({ users: user.followees, typ: "followees" });
-  const followers = PeopleNumber({ users: user.followers, typ: "followers" });
+  const followees = PeopleNumber({
+    user,
+    users: user.followees,
+    typ: "followees",
+  });
+  const followers = PeopleNumber({
+    user,
+    users: user.followers,
+    typ: "followers",
+  });
 
   return (
-    <div classname={styles["friends-container"]}>
+    <div className={styles["friends-container"]}>
       {followees}
       {followers}
     </div>
