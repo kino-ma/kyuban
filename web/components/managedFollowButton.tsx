@@ -28,7 +28,10 @@ export const ManagedFollowButton = ({
 
   const setFollowWithHook = (follow: FollowData) => {
     setFollow(follow);
-    onFollowStateChange(follow);
+
+    if (onFollowStateChange) {
+      onFollowStateChange(follow);
+    }
   };
 
   const handleNotFollowing: FollowButtonEventHandler = async (_evt) => {

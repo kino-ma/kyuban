@@ -38,7 +38,7 @@ class User(UserMixin, db.Model):
 
         users = []
         for f in follows:
-            user = User.get(f.dst_user_id)
+            user = User.get(f.src_user_id)
             users.append(user)
 
         return users

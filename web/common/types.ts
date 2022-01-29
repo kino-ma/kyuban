@@ -7,6 +7,11 @@ export type UserData = {
   updatedAt: string;
 };
 
+export type UserAndFriendsData = UserData & {
+  followers: UserData[];
+  followees: UserData[];
+};
+
 export type FollowData = {
   following: boolean;
   followed: boolean;

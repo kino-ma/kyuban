@@ -1,14 +1,15 @@
 import React, { MouseEventHandler, useState } from "react";
 import { delete_, post } from "../common/api";
-import { FollowData, UserData } from "../common/types";
+import { FollowData, UserAndFriendsData, UserData } from "../common/types";
 import { Button } from "./button";
 import { Icon } from "./icon";
 import { UserName } from "./userName";
 import styles from "../styles/card.module.css";
 import { ManagedFollowButton } from "./managedFollowButton";
+import { Friends } from "./friends";
 
 interface IUserProfileProps {
-  user: UserData;
+  user: UserAndFriendsData;
   isMe: boolean;
 }
 
@@ -24,6 +25,8 @@ export const UserProfile: React.FC<IUserProfileProps> = ({ user, isMe }) => {
 
   const followedText = followed ? <p>あなたをフォローしています</p> : null;
 
+  const friends = <Friends {...{ user }} />;
+
   return (
     <React.Fragment>
       <div className={styles.profile}>
@@ -33,6 +36,7 @@ export const UserProfile: React.FC<IUserProfileProps> = ({ user, isMe }) => {
         </h3>
         {followButton}
         {followedText}
+        {friends}
       </div>
     </React.Fragment>
   );
